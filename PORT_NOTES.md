@@ -66,11 +66,20 @@ See `QUESTIONS.md` resolved section. Summary: `badRegionsIndicator==0` ⇒ no `b
 - vs `Correlograms.mat`: event counts exact; ≥99.9% bins exact; all residual diffs traced to lags on half-ms edges (`(round(lag*fs)+20)%40==0`), float edge construction vs MATLAB.
 - Region caches under `reports/cache/<recording>/region{k}.npz` (gitignored).
 
-## Stage 4 — metrics (in progress)
+## Stage 4 — metrics (ACCEPTED 2026-09-19, Jak gate)
 
 - Loess smoother: dumped linear kernel `data/loess_kernel_2001_w20.mat` (MATLAB `smoothdata(...,'loess',20)` impulse responses). `K @ probs` matches column-wise `smoothdata` to ~1e-18.
 - Uniformity: χ² on **raw** probs; decisions exact vs `RecordingMetrics`; p relative error ≲ 3e-11 (underflow p≈0 excluded).
 - `leaderProb`: exact to 1e-12 abs on finite entries.
 - Empty pairs (`n_events==0` / all-NaN) with `sparseCorrelogramThresh==0`: **0 peaks** (not NaN).
-- **Peak counts vs `RecordingMetrics.mat` ~93.7% (SMJM, all regions).** Root cause: MATLAB `smoothdata(matrix,'loess',20)` vs `smoothdata(column,'loess',20)` differ by ULPs (~1e-18). That flips `findpeaks` on equal-height / near-threshold peaks (~230/2500 pairs in Region1). `RecordingMetrics` matches the **matrix** path 100%. The plan’s linear kernel matches the **column** path; Python vs MATLAB column-wise `findpeaks` on Region1 is **99.56%** (11/2500 ULP residuals). Regenerating metrics with matrix `smoothdata` reproduces the mat; column-wise does not. Not a SciPy vs MATLAB prominence algorithm gap on identical input.
+- **Peaks (documented quirk, not a fail bar):** matrix `smoothdata(X,'loess',20)` vs column-wise / `K@` differ by ULPs (~1e-16–1e-18). That flips `findpeaks` on knife-edge / equal-height peaks. `RecordingMetrics` was produced on the matrix path; the plan kernel is the column path. SMJM peak-count match vs `RecordingMetrics` ≈ **96.3%** with New Bot’s kernel (regions 8–13 also non-regenerable from current Correlograms even in live MATLAB ≈98.16% overall). Jak: do not block Stage 4 on these ULP flips; report % only.
 
+
+## Stage 5 — summary
+
+- Port of `summarizeCorrelograms.m` classification math only (no plots / zone transitions).
+- Cross-correlograms only when `includeAutocorrelogramsInStatistics==0` (SMJM default).
+- LF strength `|leaderProb-0.5|/0.5` into five bins at 0:0.2:1 (first/last edges padded as in MATLAB).
+- Peak-count classes from min observed through `min(10, max observed)`; last class is “or More” only when max observed > 10.
+- Uniformity: Nonuniform/Uniform; empty pairs count as Nonuniform and stay in the denominator.
+- Leader/peak fractions exclude NaN entries only.

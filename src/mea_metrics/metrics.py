@@ -59,8 +59,12 @@ def compute_region_metrics(
     right = centers > 0
     zero = centers == 0
 
+    # MATLAB sum(NaN)=NaN; NumPy nansum(all-NaN)=0 — empty pairs must stay NaN.
     leader = np.nansum(probs[left, :], axis=0) + 0.5 * np.nansum(probs[zero, :], axis=0)
     follower = np.nansum(probs[right, :], axis=0) + 0.5 * np.nansum(probs[zero, :], axis=0)
+    empty_col = ~np.isfinite(probs).all(axis=0)
+    leader[empty_col] = np.nan
+    follower[empty_col] = np.nan
 
     # Uniformity chi^2 on raw (unsmoothed) probs
     unif = np.full(n_bins, 1.0 / n_bins, dtype=np.float64)

@@ -76,3 +76,10 @@ Uniformity + leaderProb already exact vs `RecordingMetrics` in Python.
 4. Other.
 
 Holding Stage 5.
+
+
+## Resolved — Stage 4 peak gate (2026-09-19, Jak via New Bot)
+
+**Decision:** Do **not** block Stage 4 on peak-count ULP / findpeaks flips. Keep exact bars for uniformity decisions, p-values, and leaderProb. For peaks: document matrix vs column `smoothdata` ULPs in `PORT_NOTES.md`, report match %, and **do not** require ≥99% vs `RecordingMetrics` to pass. Optional quantize-before-findpeaks is allowed but not required. Stage 4 metrics **ACCEPTED** with documented peak quirk; proceed Stage 5.
+
+Supersedes prior open items on column-wise vs RecordingMetrics peak bars and R8–13 regenerability as Stage-4 blockers (R8–13 drift remains noted in PORT_NOTES as context for the reported %).

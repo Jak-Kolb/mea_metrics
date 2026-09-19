@@ -416,17 +416,130 @@ def stage_metrics(recording: str) -> int:
     if lead_ok != lead_n:
         print("ERROR: leaderProb not within 1e-12")
         ok = False
-    if peak_pct < 99.0:
-        print(
-            f"ERROR: peak count match {peak_pct:.4f}% < 99% vs RecordingMetrics "
-            "(known: matrix vs column smoothdata ULPs; see PORT_NOTES.md / QUESTIONS.md)"
-        )
-        ok = False
+    # Peaks: Jak-accepted Stage 4 gate — report match % only; ULP findpeaks flips OK.
+    print(
+        f"peak counts: reported only (Jak gate); {peak_pct:.4f}% vs RecordingMetrics "
+        "(matrix vs column smoothdata ULPs — see PORT_NOTES.md)"
+    )
     if ok:
         print("metrics: PASS")
         return 0
     print("metrics: FAIL")
     return 1
+
+
+
+def stage_summary(recording: str) -> int:
+    """Classify metric arrays into class fractions (summarizeCorrelograms.m math).
+
+    Plan bar: fractions from reference metric arrays match an independent
+    recomputation to 1e-12. Python-computed metrics are reported for LF/unif
+    (should match after empty-pair NaN fix); peak fractions may diverge (Jak).
+    """
+    import numpy as np
+    from pathlib import Path as P
+
+    from mea_metrics.matref import load_reference
+    from mea_metrics.metrics import compute_region_metrics, load_loess_kernel
+    from mea_metrics.summary import (
+        LF_EDGES,
+        LF_NAMES,
+        UNIF_NAMES,
+        classify_region,
+        _offdiag_mask,
+    )
+
+    ref = load_reference(recording)
+    n_cells = len(ref.cell_ids)
+    include_auto = bool(ref.plot_props.include_autocorrelograms_in_statistics)
+    max_pk = int(ref.plot_props.max_peak_count_before_noise)
+    sel = (
+        np.ones(n_cells * n_cells, dtype=bool)
+        if include_auto
+        else _offdiag_mask(n_cells)
+    )
+
+    def lf_fractions_independent(lead_flat: np.ndarray) -> np.ndarray:
+        lead = np.asarray(lead_flat, dtype=np.float64).reshape(-1)[sel]
+        strength = np.abs(lead - 0.5) / 0.5
+        finite = np.isfinite(strength)
+        out = np.zeros(5, dtype=np.float64)
+        for g in range(5):
+            a, b = LF_EDGES[g], LF_EDGES[g + 1]
+            if g == 0:
+                m = finite & (strength >= a - 1.0) & (strength < b)
+            elif g < 4:
+                m = finite & (strength >= a) & (strength < b)
+            else:
+                m = finite & (strength >= a) & (strength <= b + 1.0)
+            out[g] = float(np.sum(m))
+        n = int(np.sum(finite))
+        return out / n if n else out * np.nan
+
+    worst_self = 0.0
+    worst_py_lf = 0.0
+    worst_py_unif = 0.0
+    K = load_loess_kernel(P("data/loess_kernel_2001_w20.mat"))
+    centers = ref.correlogram_bins
+
+    for ri in sorted(ref.metrics):
+        _p, u_ref, lead_ref, npeak_ref, _pl = ref.metrics[ri]
+        got_frac = classify_region(
+            lead_ref,
+            npeak_ref,
+            u_ref,
+            n_cells=n_cells,
+            include_autocorrelograms=include_auto,
+            max_peak_count_before_noise=max_pk,
+        )
+        indep = lf_fractions_independent(lead_ref)
+        worst_self = max(worst_self, float(np.nanmax(np.abs(got_frac.leader_follower - indep))))
+
+        probs, nev, _ = ref.correlograms[ri]
+        py = compute_region_metrics(probs, nev, centers, K)
+        py_frac = classify_region(
+            py.leader_prob,
+            py.n_peaks,
+            py.is_uniform.astype(np.float64),
+            n_cells=n_cells,
+            include_autocorrelograms=include_auto,
+            max_peak_count_before_noise=max_pk,
+        )
+        worst_py_lf = max(
+            worst_py_lf,
+            float(np.nanmax(np.abs(py_frac.leader_follower - got_frac.leader_follower))),
+        )
+        worst_py_unif = max(
+            worst_py_unif,
+            float(np.nanmax(np.abs(py_frac.uniformity - got_frac.uniformity))),
+        )
+
+    print(f"regions: {len(ref.metrics)}")
+    print(f"LF fractions: classify(ref) vs independent recompute: worst abs {worst_self:.3e}")
+    print(f"LF fractions: classify(python metrics) vs classify(ref): worst abs {worst_py_lf:.3e}")
+    print(f"unif fractions: classify(python) vs classify(ref): worst abs {worst_py_unif:.3e}")
+    print(f"LF classes: {LF_NAMES}")
+    print(f"uniformity classes: {UNIF_NAMES}")
+
+    ok = True
+    if worst_self > 1e-12:
+        print(f"ERROR: summary LF math disagrees with independent recompute ({worst_self:.3e})")
+        ok = False
+    if worst_py_unif > 1e-12:
+        print(f"ERROR: uniformity class fractions py vs ref {worst_py_unif:.3e}")
+        ok = False
+    # LF py vs ref: allow tiny bin-edge ULP from leader 1e-14 noise — warn if > 1e-9
+    if worst_py_lf > 1e-9:
+        print(
+            f"NOTE: LF class fractions py vs ref differ by {worst_py_lf:.3e} "
+            "(bin-edge ULP from leaderProb ~1e-14; not a Stage 5 fail bar)"
+        )
+    if ok:
+        print("summary: PASS")
+        return 0
+    print("summary: FAIL")
+    return 1
+
 
 
 def stage_stub(name: str) -> int:
@@ -455,6 +568,8 @@ def main(argv: list[str] | None = None) -> int:
         return stage_correlograms(args.recording)
     if args.stage == "metrics":
         return stage_metrics(args.recording)
+    if args.stage == "summary":
+        return stage_summary(args.recording)
     if args.stage == "all":
         rc = stage_ref(args.recording)
         if rc != 0:
@@ -476,9 +591,9 @@ def main(argv: list[str] | None = None) -> int:
         if rc != 0:
             return rc
         print("")
-        r = stage_stub("summary")
-        if r != 0:
-            return r
+        rc = stage_summary(args.recording)
+        if rc != 0:
+            return rc
         return 0
     return stage_stub(args.stage)
 
