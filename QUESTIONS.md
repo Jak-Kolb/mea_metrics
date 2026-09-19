@@ -52,3 +52,27 @@ Accept which gate?
 3. Other.
 
 Until answered, `verify.py --stage metrics` fails on the RecordingMetrics peak bar while reporting unif/leader green.
+
+## Open — Stage 4 RecordingMetrics peaks not regenerable (2026-09-19)
+
+**Gate was Option 2:** ≥99% peak counts vs `RecordingMetrics.mat`.
+
+**Finding:** Live MATLAB R2024b on jakpc, exact `calculateCorrelogramMetrics` path
+(`smoothdata(rcor,'loess',20)` matrix → `max(0,·)` → renorm → `findpeaks(...,'MinPeakProminence',1/2001)`)
+reproduces `RecordingMetrics` peak counts **100%** for Regions 1–7 and 14, but only
+**~89–98%** for Regions 8–13. Overall **34356/35000 = 98.16%** — ceiling below the 99% bar.
+Sweeping loess window ∈ {8…24} and prominence factor ∈ {0.25…2}×1/n does not beat loess/20/1.0
+on Region 8 (best still 2230/2500).
+
+`Correlograms.mat` and `RecordingMetrics.mat` share the same mtime (2026-09-18 18:28) but
+Regions 8–13 peak fields are **not** a regeneration of the former with the current source.
+
+Uniformity + leaderProb already exact vs `RecordingMetrics` in Python.
+
+**Need gate revision:**
+1. Re-gold: regenerate `RecordingMetrics` peaks from current Correlograms on jakpc; Python matches that (≥99% / exact).
+2. Score peaks only on Regions 1–7+14 (where live MATLAB ≡ RecordingMetrics); document R8–13 as reference drift.
+3. Lower bar to ≥98% with PORT_NOTES on R8–13 non-regenerability.
+4. Other.
+
+Holding Stage 5.
