@@ -342,7 +342,7 @@ def stage_metrics(recording: str) -> int:
     from mea_metrics.metrics import compute_region_metrics, load_loess_kernel
 
     ref = load_reference(recording)
-    kernel_path = P("data/kernels/loess_kernel_2001_w20.mat")
+    kernel_path = P("data/loess_kernel_2001_w20.mat")
     if not kernel_path.is_file():
         print(f"ERROR: missing loess kernel {kernel_path}")
         return 1
