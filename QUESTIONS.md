@@ -42,7 +42,7 @@ Rejected: `None` when indicator==0 — empty list matches “no intervals” mor
 - Correlogram/metrics region keys: 0-based (`Region1=0`).
 - `InjuryIndicies` spelling kept as in MATLAB.
 
-## Open — Stage 4 peak acceptance (2026-09-19)
+## ~~Open~~ Superseded — Stage 4 peak acceptance (2026-09-19)
 
 **Question for New Bot / Jak:** Stage 4 plan bar is ≥99% peak counts vs `RecordingMetrics.mat`. That file matches MATLAB **matrix** `smoothdata`+`findpeaks`. Our dumped loess kernel (plan Step 4) matches **column** `smoothdata` and reaches ~93.7% vs the mat, but **≥99.5%** vs column-wise MATLAB on the same `Correlograms.mat`. Uniformity + leader already exact.
 
@@ -53,7 +53,7 @@ Accept which gate?
 
 Until answered, `verify.py --stage metrics` fails on the RecordingMetrics peak bar while reporting unif/leader green.
 
-## Open — Stage 4 RecordingMetrics peaks not regenerable (2026-09-19)
+## ~~Open~~ Superseded — Stage 4 RecordingMetrics peaks not regenerable (2026-09-19)
 
 **Gate was Option 2:** ≥99% peak counts vs `RecordingMetrics.mat`.
 
@@ -75,7 +75,7 @@ Uniformity + leaderProb already exact vs `RecordingMetrics` in Python.
 3. Lower bar to ≥98% with PORT_NOTES on R8–13 non-regenerability.
 4. Other.
 
-Holding Stage 5.
+~~Holding Stage 5.~~ → **Resolved below (Jak 2026-09-19); Stage 5 done.**
 
 
 ## Resolved — Stage 4 peak gate (2026-09-19, Jak via New Bot)
@@ -83,3 +83,5 @@ Holding Stage 5.
 **Decision:** Do **not** block Stage 4 on peak-count ULP / findpeaks flips. Keep exact bars for uniformity decisions, p-values, and leaderProb. For peaks: document matrix vs column `smoothdata` ULPs in `PORT_NOTES.md`, report match %, and **do not** require ≥99% vs `RecordingMetrics` to pass. Optional quantize-before-findpeaks is allowed but not required. Stage 4 metrics **ACCEPTED** with documented peak quirk; proceed Stage 5.
 
 Supersedes prior open items on column-wise vs RecordingMetrics peak bars and R8–13 regenerability as Stage-4 blockers (R8–13 drift remains noted in PORT_NOTES as context for the reported %).
+
+**Also (New Bot 2026-09-19):** do not re-ask Option 2 gates; do not re-gold RecordingMetrics unless New Bot asks later. PORT_NOTES must keep: (1) ULP/findpeaks knife-edge flips; (2) live MATLAB vs saved RecordingMetrics peaks ~98.16% overall (R8–13 drift vs current Correlograms); (3) unif + leaderProb exact = hard bar. Stage 5 summaries for SMJM are green (`verify.py --stage summary`).
