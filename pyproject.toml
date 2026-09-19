@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mea-metrics"
+version = "0.0.1"
+description = "Python port of original_mea_matlab metrics pipeline"
+readme = "PORT_NOTES.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy",
+  "scipy",
+  "h5py",
+]
+
+[project.optional-dependencies]
+plx = ["neo"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+mea-metrics-verify = "mea_metrics.verify_cli:main"
