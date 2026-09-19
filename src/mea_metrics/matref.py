@@ -6,6 +6,8 @@ Data layout (actual, not plan wording):
 
 Default MEA_MATLAB_DATA on the box: /workspace/mea_metrics_port/data
 
+bad_regions contract: bad_regions_indicator 0|1; bad_regions is list[(start_s, end_s)] in inclusive seconds (MATLAB badStartTime/badEndTime). Empty list when indicator==0 (fields absent in .mat).
+
 Region indexing: correlograms and metrics use 0-based int keys where
 Region1 → 0, Region2 → 1, ..., RegionN → N-1.
 """
@@ -240,9 +242,11 @@ class Reference:
         field(default_factory=dict)
     )
 
-    bad_signals: Optional[np.ndarray] = None
-    bad_regions_indicator: int = 0
-    bad_regions: Any = None  # full struct; often only indicator when 0
+    bad_signals: Optional[np.ndarray] = None  # bool/0-1 mask, length == n_cells
+    bad_regions_indicator: int = 0  # MATLAB badRegionsIndicator (0|1)
+    # Inclusive [start_s, end_s] pairs in seconds (MATLAB badStartTime/badEndTime after *60).
+    # Empty list when indicator==0: MATLAB never writes those fields in that case.
+    bad_regions: List[Tuple[float, float]] = field(default_factory=list)
     injuries: Optional[Injuries] = None
     plot_props: Optional[PlotProps] = None
 
@@ -415,13 +419,32 @@ def load_reference(recording: str, data_root: Optional[Union[str, Path]] = None)
             ref.load_warnings.append(f"badSignals.mat: {e}")
 
     # --- badRegions ---
+    # MATLAB removeJunkRecordings.m:
+    #   badRegionsIndicator 0|1; only if 1: badStartTime/badEndTime (minutes then .*60 → seconds).
+    #   When indicator==0 the start/end fields are never created on the struct.
     if "badRegions.mat" in present:
         try:
             d = loadmat(ref_dir / "badRegions.mat")
             br = _get_top(d, "badRegions")
-            ref.bad_regions = br
             ind = _field(br, "badRegionsIndicator", 0)
             ref.bad_regions_indicator = int(ind) if ind is not None else 0
+            starts = _field(br, "badStartTime", None)
+            ends = _field(br, "badEndTime", None)
+            pairs: List[Tuple[float, float]] = []
+            if ref.bad_regions_indicator == 1 and starts is not None and ends is not None:
+                s = np.atleast_1d(np.asarray(starts, dtype=np.float64)).ravel()
+                e = np.atleast_1d(np.asarray(ends, dtype=np.float64)).ravel()
+                if s.size != e.size:
+                    ref.load_warnings.append(
+                        f"badRegions.mat: badStartTime length {s.size} != badEndTime length {e.size}"
+                    )
+                for a, b in zip(s, e):
+                    pairs.append((float(a), float(b)))
+            elif ref.bad_regions_indicator == 1:
+                ref.load_warnings.append(
+                    "badRegions.mat: indicator==1 but badStartTime/badEndTime missing"
+                )
+            ref.bad_regions = pairs
         except Exception as e:
             ref.load_warnings.append(f"badRegions.mat: {e}")
 
@@ -651,14 +674,14 @@ def inventory_text(ref: Reference) -> str:
     else:
         lines.append("badSignals: (missing)")
     lines.append(f"badRegions.badRegionsIndicator: {ref.bad_regions_indicator}")
-    if ref.bad_regions is not None and _is_mat_struct(ref.bad_regions):
-        extra = [f for f in ref.bad_regions._fieldnames if f != "badRegionsIndicator"]
-        if extra:
-            lines.append(f"  additional badRegions fields: {extra}")
-        else:
-            lines.append(
-                "  (no region table present when indicator=0 — only badRegionsIndicator)"
-            )
+    lines.append(
+        f"bad_regions (list of (start_s, end_s), inclusive seconds): "
+        f"n={len(ref.bad_regions)} {ref.bad_regions}"
+    )
+    if ref.bad_regions_indicator == 0 and not ref.bad_regions:
+        lines.append(
+            "  contract: indicator==0 → empty list (MATLAB omits badStartTime/badEndTime)"
+        )
     if ref.regions_min is not None:
         lines.append(
             f"AnalysisRegions: numRegions={ref.num_regions}, "
