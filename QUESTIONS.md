@@ -5,7 +5,7 @@ Template: add items here instead of guessing. Resolve or carry into later stages
 ## Open
 
 1. **badSignals nonzero encoding across recordings**  
-   Settled for SMJM (length-`CellCount` logical/0-1 mask, all false). Confirm on any recording that flags units: nonzero entries are mask positions aligned to `CellIDs`, not a list of indices (`removeBadSignals.m`).
+   Settled for SMJM (length-`CellCount` logical/0-1 mask, all false). Confirm on any recording that flags units: nonzero entries are mask positions aligned to `CellIDs`, not a list of indices (`removeBadSignals.m`). **Does not block Stage 1** — all four paper recordings are all-zero masks.
 
 ## Resolved
 

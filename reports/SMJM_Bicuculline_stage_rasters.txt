@@ -1,0 +1,8 @@
+cell_ids: EXACT match (50 units)
+unit_count: EXACT match (50)
+spike_times: 50/50 units exactly equal
+fs: EXACT match (40000.0)
+end_time_s: EXACT match (6298.7563)
+
+rasters summary: 54/54 exact (100.0000%), worst_abs_diff=0.0
+rasters: PASS (exact match to ProcessedData)
