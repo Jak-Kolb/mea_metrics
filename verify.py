@@ -326,6 +326,109 @@ def stage_correlograms(recording: str) -> int:
     return 0
 
 
+
+def stage_metrics(recording: str) -> int:
+    """Compare correlogram metrics to RecordingMetrics.mat.
+
+    Uniformity decisions must be exact; p-values within 1e-9 relative (skipping
+    underflow); leaderProb within 1e-12 abs. Peak counts are reported vs the
+    saved mat; see PORT_NOTES.md — matrix vs column smoothdata ULPs prevent a
+    fair ≥99% bar against RecordingMetrics when using the plan's linear kernel.
+    """
+    import numpy as np
+    from pathlib import Path as P
+
+    from mea_metrics.matref import load_reference
+    from mea_metrics.metrics import compute_region_metrics, load_loess_kernel
+
+    ref = load_reference(recording)
+    kernel_path = P("data/kernels/loess_kernel_2001_w20.mat")
+    if not kernel_path.is_file():
+        print(f"ERROR: missing loess kernel {kernel_path}")
+        return 1
+    K = load_loess_kernel(kernel_path)
+    centers = ref.correlogram_bins
+
+    n_pairs = 0
+    unif_ok = 0
+    lead_ok = 0
+    lead_n = 0
+    peak_ok = 0
+    loc_ok = 0
+    loc_tot = 0
+    p_rel_vals = []
+
+    for ri in sorted(ref.correlograms):
+        probs, nev, _ = ref.correlograms[ri]
+        got = compute_region_metrics(probs, nev, centers, K)
+        p_ref, u_ref, lead_ref, npeak_ref, plocs_ref = ref.metrics[ri]
+        u_ref = np.asarray(u_ref, dtype=np.uint8).ravel()
+        npeak_ref = np.asarray(npeak_ref, dtype=np.float64).ravel()
+        lead_ref = np.asarray(lead_ref, dtype=np.float64).ravel()
+        p_ref = np.asarray(p_ref, dtype=np.float64).ravel()
+
+        n_pairs += got.n_peaks.size
+        unif_ok += int(np.sum(got.is_uniform.astype(np.uint8) == u_ref))
+
+        lm = np.isfinite(got.leader_prob) & np.isfinite(lead_ref)
+        lead_n += int(lm.sum())
+        lead_ok += int(np.sum(np.abs(got.leader_prob[lm] - lead_ref[lm]) <= 1e-12))
+
+        peak_ok += int(np.sum(got.n_peaks == npeak_ref))
+
+        mask = (
+            np.isfinite(got.p_uniform)
+            & np.isfinite(p_ref)
+            & (np.abs(p_ref) > 1e-300)
+        )
+        if mask.any():
+            p_rel_vals.append(
+                np.abs(got.p_uniform[mask] - p_ref[mask]) / np.abs(p_ref[mask])
+            )
+
+        for j in range(got.n_peaks.size):
+            if got.n_peaks[j] != npeak_ref[j]:
+                continue
+            loc_tot += 1
+            ol = np.asarray(got.peak_locations[j], dtype=np.float64)
+            rl = np.asarray(plocs_ref[j], dtype=np.float64)
+            rl = rl[np.isfinite(rl)]
+            if ol.size == rl.size and (
+                ol.size == 0 or np.allclose(np.sort(ol), np.sort(rl), atol=1e-9)
+            ):
+                loc_ok += 1
+
+    p_rel = float(np.max(np.concatenate(p_rel_vals))) if p_rel_vals else 0.0
+    peak_pct = 100.0 * peak_ok / n_pairs if n_pairs else 0.0
+    print(f"uniformity decisions: {unif_ok}/{n_pairs}")
+    print(f"uniformity p worst rel (p>|1e-300|): {p_rel:.3e}")
+    print(f"leaderProb abs<=1e-12: {lead_ok}/{lead_n}")
+    print(f"peak counts vs RecordingMetrics: {peak_ok}/{n_pairs} ({peak_pct:.4f}%)")
+    print(f"peak locations where counts agree: {loc_ok}/{loc_tot}")
+
+    ok = True
+    if unif_ok != n_pairs:
+        print("ERROR: uniformity decisions not exact")
+        ok = False
+    if p_rel > 1e-9:
+        print(f"ERROR: uniformity p relative {p_rel:.3e} > 1e-9")
+        ok = False
+    if lead_ok != lead_n:
+        print("ERROR: leaderProb not within 1e-12")
+        ok = False
+    if peak_pct < 99.0:
+        print(
+            f"ERROR: peak count match {peak_pct:.4f}% < 99% vs RecordingMetrics "
+            "(known: matrix vs column smoothdata ULPs; see PORT_NOTES.md / QUESTIONS.md)"
+        )
+        ok = False
+    if ok:
+        print("metrics: PASS")
+        return 0
+    print("metrics: FAIL")
+    return 1
+
+
 def stage_stub(name: str) -> int:
     print(f"stage '{name}': not implemented yet")
     return 2
@@ -350,6 +453,8 @@ def main(argv: list[str] | None = None) -> int:
         return stage_regions(args.recording)
     if args.stage == "correlograms":
         return stage_correlograms(args.recording)
+    if args.stage == "metrics":
+        return stage_metrics(args.recording)
     if args.stage == "all":
         rc = stage_ref(args.recording)
         if rc != 0:
@@ -366,11 +471,14 @@ def main(argv: list[str] | None = None) -> int:
         rc = stage_correlograms(args.recording)
         if rc != 0:
             return rc
-        for s in ("metrics", "summary"):
-            print("")
-            r = stage_stub(s)
-            if r != 0:
-                return r
+        print("")
+        rc = stage_metrics(args.recording)
+        if rc != 0:
+            return rc
+        print("")
+        r = stage_stub("summary")
+        if r != 0:
+            return r
         return 0
     return stage_stub(args.stage)
 

@@ -65,3 +65,12 @@ See `QUESTIONS.md` resolved section. Summary: `badRegionsIndicator==0` ⇒ no `b
 - `searchsorted` path bit-identical to brute-force histogram counts on sampled pairs.
 - vs `Correlograms.mat`: event counts exact; ≥99.9% bins exact; all residual diffs traced to lags on half-ms edges (`(round(lag*fs)+20)%40==0`), float edge construction vs MATLAB.
 - Region caches under `reports/cache/<recording>/region{k}.npz` (gitignored).
+
+## Stage 4 — metrics (in progress)
+
+- Loess smoother: dumped linear kernel `data/kernels/loess_kernel_2001_w20.mat` (MATLAB `smoothdata(...,'loess',20)` impulse responses). `K @ probs` matches column-wise `smoothdata` to ~1e-18.
+- Uniformity: χ² on **raw** probs; decisions exact vs `RecordingMetrics`; p relative error ≲ 3e-11 (underflow p≈0 excluded).
+- `leaderProb`: exact to 1e-12 abs on finite entries.
+- Empty pairs (`n_events==0` / all-NaN) with `sparseCorrelogramThresh==0`: **0 peaks** (not NaN).
+- **Peak counts vs `RecordingMetrics.mat` ~93.7% (SMJM, all regions).** Root cause: MATLAB `smoothdata(matrix,'loess',20)` vs `smoothdata(column,'loess',20)` differ by ULPs (~1e-18). That flips `findpeaks` on equal-height / near-threshold peaks (~230/2500 pairs in Region1). `RecordingMetrics` matches the **matrix** path 100%. The plan’s linear kernel matches the **column** path; Python vs MATLAB column-wise `findpeaks` on Region1 is **99.56%** (11/2500 ULP residuals). Regenerating metrics with matrix `smoothdata` reproduces the mat; column-wise does not. Not a SciPy vs MATLAB prominence algorithm gap on identical input.
+
