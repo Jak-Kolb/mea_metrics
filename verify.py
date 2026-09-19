@@ -147,6 +147,76 @@ def stage_rasters(recording: str) -> int:
     return 0
 
 
+
+def stage_regions(recording: str) -> int:
+    """Compare auto_regions output to AnalysisRegions.mat (exact)."""
+    import numpy as np
+
+    from mea_metrics.matref import load_reference
+    from mea_metrics.regions import auto_regions
+    from mea_metrics.stats import compute_region_stats
+
+    ref = load_reference(recording)
+    if ref.regions_min is None or ref.regions_sec is None:
+        print("ERROR: AnalysisRegions missing from reference", file=sys.stderr)
+        return 1
+    if ref.end_time_s is None:
+        print("ERROR: end_time_s missing from reference", file=sys.stderr)
+        return 1
+
+    L = 7
+    if ref.plot_props is not None and getattr(ref.plot_props, "automated_region_bin_length", None):
+        L = int(ref.plot_props.automated_region_bin_length)
+
+    tab = auto_regions(ref.end_time_s, ref.rasters, region_len_min=L)
+
+    failures = []
+    n_items = 0
+    n_equal = 0
+
+    n_items += 1
+    if tab.num_regions == ref.num_regions:
+        n_equal += 1
+        print(f"num_regions: EXACT match ({ref.num_regions})")
+    else:
+        failures.append(f"num_regions {tab.num_regions} vs {ref.num_regions}")
+        print(failures[-1])
+
+    n_items += 1
+    if np.array_equal(tab.minutes, np.asarray(ref.regions_min, dtype=np.float64)):
+        n_equal += 1
+        print(f"regions_min: EXACT match shape={tab.minutes.shape}")
+    else:
+        d = np.max(np.abs(tab.minutes - ref.regions_min)) if tab.minutes.shape == ref.regions_min.shape else float("nan")
+        failures.append(f"regions_min mismatch max_abs={d}")
+        print(failures[-1])
+        print("  got:\n", tab.minutes)
+        print("  ref:\n", ref.regions_min)
+
+    n_items += 1
+    if np.array_equal(tab.seconds, np.asarray(ref.regions_sec, dtype=np.float64)):
+        n_equal += 1
+        print(f"regions_sec: EXACT match shape={tab.seconds.shape}")
+    else:
+        d = np.max(np.abs(tab.seconds - ref.regions_sec)) if tab.seconds.shape == ref.regions_sec.shape else float("nan")
+        failures.append(f"regions_sec mismatch max_abs={d}")
+        print(failures[-1])
+
+    # Smoke-run stats (no MATLAB numeric dump to compare yet)
+    stats = compute_region_stats(ref.rasters, tab)
+    print(f"stats: computed for {len(stats.spike_rate)} regions (smoke OK)")
+
+    pct = 100.0 * n_equal / n_items if n_items else 0.0
+    print(f"\nregions summary: {n_equal}/{n_items} exact ({pct:.4f}%)")
+    if failures:
+        print(f"FAILURES ({len(failures)}):")
+        for f in failures:
+            print(f"  - {f}")
+        return 1
+    print("regions: PASS (exact match to AnalysisRegions)")
+    return 0
+
+
 def stage_stub(name: str) -> int:
     print(f"stage '{name}': not implemented yet")
     return 2
@@ -167,6 +237,8 @@ def main(argv: list[str] | None = None) -> int:
         return stage_ref(args.recording)
     if args.stage == "rasters":
         return stage_rasters(args.recording)
+    if args.stage == "regions":
+        return stage_regions(args.recording)
     if args.stage == "all":
         rc = stage_ref(args.recording)
         if rc != 0:
@@ -175,7 +247,11 @@ def main(argv: list[str] | None = None) -> int:
         rc = stage_rasters(args.recording)
         if rc != 0:
             return rc
-        for s in ("regions", "correlograms", "metrics", "summary"):
+        print("")
+        rc = stage_regions(args.recording)
+        if rc != 0:
+            return rc
+        for s in ("correlograms", "metrics", "summary"):
             print("")
             r = stage_stub(s)
             if r != 0:

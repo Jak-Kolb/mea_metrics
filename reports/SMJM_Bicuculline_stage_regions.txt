@@ -1,0 +1,7 @@
+num_regions: EXACT match (14)
+regions_min: EXACT match shape=(14, 2)
+regions_sec: EXACT match shape=(14, 2)
+stats: computed for 14 regions (smoke OK)
+
+regions summary: 3/3 exact (100.0000%)
+regions: PASS (exact match to AnalysisRegions)

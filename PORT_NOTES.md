@@ -50,3 +50,10 @@ Observed on `SMJM_Bicuculline` (scipy `loadmat(..., struct_as_record=False, sque
 ## badRegions / bad_regions (settled 2026-09-19)
 
 See `QUESTIONS.md` resolved section. Summary: `badRegionsIndicator==0` ⇒ no `badStartTime`/`badEndTime` fields in the mat (confirmed on all four recordings). Python exposes `bad_regions_indicator: int` and `bad_regions: list[tuple[start_s, end_s]]` (empty when indicator is 0). Times are inclusive seconds after MATLAB’s `.*60`.
+
+## Stage 2 — regions / stats quirks
+
+- Auto regions follow `getInjuryOrTreatmentIndicies.m` with `M = floor(end_time_s/60)` as `max(minBinsSPM)`.
+- Region ends use `L/1000` minute gap; last region dropped if length/L < 0.8.
+- Silent-minute filter: `minBinsSPM = 1..M`, region owns labels with `s <= label <= e`; drop if any owned minute has `meanSPM == 0`.
+- `plotStatsInEachRegion.m` divides spike counts by region length in **seconds** while commenting "per minute" — replicated in `stats.compute_region_stats` (`spike_rate`).
