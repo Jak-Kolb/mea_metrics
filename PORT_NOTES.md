@@ -57,3 +57,11 @@ See `QUESTIONS.md` resolved section. Summary: `badRegionsIndicator==0` ⇒ no `b
 - Region ends use `L/1000` minute gap; last region dropped if length/L < 0.8.
 - Silent-minute filter: `minBinsSPM = 1..M`, region owns labels with `s <= label <= e`; drop if any owned minute has `meanSPM == 0`.
 - `plotStatsInEachRegion.m` divides spike counts by region length in **seconds** while commenting "per minute" — replicated in `stats.compute_region_stats` (`spike_rate`).
+
+## Stage 3 — correlograms
+
+- Lag = `t_cmp - t_ref` (float64); window inclusive on both ends.
+- `RegionTimes==60` → 0 quirk implemented.
+- `searchsorted` path bit-identical to brute-force histogram counts on sampled pairs.
+- vs `Correlograms.mat`: event counts exact; ≥99.9% bins exact; all residual diffs traced to lags on half-ms edges (`(round(lag*fs)+20)%40==0`), float edge construction vs MATLAB.
+- Region caches under `reports/cache/<recording>/region{k}.npz` (gitignored).

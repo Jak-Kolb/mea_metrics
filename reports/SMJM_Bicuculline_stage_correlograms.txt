@@ -1,0 +1,7 @@
+searchsorted vs brute-force: bit-identical counts on region0 pair (0,1)
+names match all regions: True
+n_events exact pairs: 35000/35000
+bin match: 70014012/70035000 (99.970032%)
+differing pair-columns explained by edge ties: 7263/7263
+cache: reports/cache/SMJM_Bicuculline
+correlograms: PASS

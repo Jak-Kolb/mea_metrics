@@ -217,6 +217,115 @@ def stage_regions(recording: str) -> int:
     return 0
 
 
+
+def stage_correlograms(recording: str) -> int:
+    """Compare computed correlograms to Correlograms.mat (≥99.9% bins; edge ties)."""
+    import numpy as np
+    from pathlib import Path as P
+
+    from mea_metrics.matref import load_reference
+    from mea_metrics.correlogram import (
+        bin_centers_and_edges,
+        compute_all_regions,
+        pair_lags_searchsorted,
+        pair_lags_bruteforce,
+        prepare_region_rasters,
+        _apply_region_bound_quirk,
+    )
+
+    ref = load_reference(recording)
+    bin_max = float(ref.plot_props.correlogram_bin_max)
+    n_bins = int(ref.plot_props.number_of_correlogram_bins)
+    centers, edges = bin_centers_and_edges(bin_max, n_bins)
+    if not np.allclose(centers, ref.correlogram_bins):
+        print("ERROR: bin centers differ from reference CorrelogramBins")
+        return 1
+
+    # (a) searchsorted vs brute-force bit-identical counts on region 0, pair (0,1)
+    bounds = _apply_region_bound_quirk(ref.regions_sec)
+    rr0 = prepare_region_rasters(ref.rasters, float(bounds[0, 0]), float(bounds[0, 1]))
+    lags_s = pair_lags_searchsorted(rr0[0], rr0[1], bin_max)
+    lags_b = pair_lags_bruteforce(rr0[0], rr0[1], bin_max)
+    cs, _ = np.histogram(lags_s, edges)
+    cb, _ = np.histogram(lags_b, edges)
+    if not np.array_equal(cs, cb):
+        print("ERROR: searchsorted vs brute-force histogram counts differ on region0 pair(0,1)")
+        return 1
+    print("searchsorted vs brute-force: bit-identical counts on region0 pair (0,1)")
+
+    cache_dir = P("reports/cache") / recording
+    got = compute_all_regions(
+        ref.cell_ids,
+        ref.rasters,
+        ref.regions_sec,
+        bin_max=bin_max,
+        n_bins=n_bins,
+        cache_dir=cache_dir,
+    )
+
+    fs = float(ref.fs) if ref.fs else 40000.0
+    total_bins = 0
+    match_bins = 0
+    total_pairs = 0
+    event_pairs_exact = 0
+    name_ok = True
+    edge_cols_ok = 0
+    edge_cols = 0
+
+    for ri in sorted(got):
+        g = got[ri]
+        rp, rn, rnames = ref.correlograms[ri]
+        rp = rp.astype(np.float64)
+        rn = rn.astype(np.float64)
+        total_pairs += g.n_events.size
+        event_pairs_exact += int(np.sum(g.n_events == rn))
+        if list(g.names) != list(rnames):
+            name_ok = False
+        eq = np.isclose(g.probs, rp, equal_nan=True)
+        total_bins += eq.size
+        match_bins += int(eq.sum())
+        diff_cols = np.unique(np.where(~eq)[1])
+        for col in diff_cols:
+            edge_cols += 1
+            i_ref = col // len(ref.cell_ids)
+            j_cmp = col % len(ref.cell_ids)
+            t0, t1 = float(bounds[ri, 0]), float(bounds[ri, 1])
+            # use cached region rasters
+            rras = prepare_region_rasters(ref.rasters, t0, t1)
+            lags = pair_lags_searchsorted(rras[i_ref], rras[j_cmp], bin_max)
+            our_c, _ = np.histogram(lags, edges)
+            if rn[col] == 0 or np.isnan(rp[0, col]):
+                continue
+            ref_c = np.rint(rp[:, col] * rn[col]).astype(np.int64)
+            mismatch = int(np.abs(our_c.astype(np.int64) - ref_c).sum())
+            samples = np.round(lags * fs).astype(np.int64)
+            n_edge = int(np.sum((samples + 20) % 40 == 0))
+            if mismatch <= 2 * n_edge:
+                edge_cols_ok += 1
+
+    pct = 100.0 * match_bins / total_bins if total_bins else 0.0
+    print(f"names match all regions: {name_ok}")
+    print(f"n_events exact pairs: {event_pairs_exact}/{total_pairs}")
+    print(f"bin match: {match_bins}/{total_bins} ({pct:.6f}%)")
+    print(f"differing pair-columns explained by edge ties: {edge_cols_ok}/{edge_cols}")
+    print(f"cache: {cache_dir}")
+
+    if not name_ok:
+        print("ERROR: ComparisonNames mismatch")
+        return 1
+    if event_pairs_exact != total_pairs:
+        print("ERROR: n_events not exact for all pairs")
+        return 1
+    if pct < 99.9:
+        print(f"ERROR: bin match {pct:.6f}% < 99.9%")
+        return 1
+    if edge_cols and edge_cols_ok != edge_cols:
+        print("ERROR: some differing columns not explained by edge ties")
+        return 1
+    print("correlograms: PASS")
+    return 0
+
+
 def stage_stub(name: str) -> int:
     print(f"stage '{name}': not implemented yet")
     return 2
@@ -239,6 +348,8 @@ def main(argv: list[str] | None = None) -> int:
         return stage_rasters(args.recording)
     if args.stage == "regions":
         return stage_regions(args.recording)
+    if args.stage == "correlograms":
+        return stage_correlograms(args.recording)
     if args.stage == "all":
         rc = stage_ref(args.recording)
         if rc != 0:
@@ -251,7 +362,11 @@ def main(argv: list[str] | None = None) -> int:
         rc = stage_regions(args.recording)
         if rc != 0:
             return rc
-        for s in ("correlograms", "metrics", "summary"):
+        print("")
+        rc = stage_correlograms(args.recording)
+        if rc != 0:
+            return rc
+        for s in ("metrics", "summary"):
             print("")
             r = stage_stub(s)
             if r != 0:
