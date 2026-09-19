@@ -68,7 +68,7 @@ See `QUESTIONS.md` resolved section. Summary: `badRegionsIndicator==0` ⇒ no `b
 
 ## Stage 4 — metrics (in progress)
 
-- Loess smoother: dumped linear kernel `data/kernels/loess_kernel_2001_w20.mat` (MATLAB `smoothdata(...,'loess',20)` impulse responses). `K @ probs` matches column-wise `smoothdata` to ~1e-18.
+- Loess smoother: dumped linear kernel `data/loess_kernel_2001_w20.mat` (MATLAB `smoothdata(...,'loess',20)` impulse responses). `K @ probs` matches column-wise `smoothdata` to ~1e-18.
 - Uniformity: χ² on **raw** probs; decisions exact vs `RecordingMetrics`; p relative error ≲ 3e-11 (underflow p≈0 excluded).
 - `leaderProb`: exact to 1e-12 abs on finite entries.
 - Empty pairs (`n_events==0` / all-NaN) with `sparseCorrelogramThresh==0`: **0 peaks** (not NaN).
