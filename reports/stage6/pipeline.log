@@ -1,0 +1,86 @@
+==== STAGE6 START 2026-09-22T16:41:49+00:00 host=JakPC pid=207324 ====
+===== ER52_ImpactWithBicuculline correlograms 2026-09-22T16:41:49+00:00 =====
+searchsorted vs brute-force: bit-identical counts on region0 pair (0,1)
+names match all regions: True
+n_events exact pairs: 238050/238050
+bin match: 476140861/476338050 (99.958603%)
+differing pair-columns explained by edge ties: 79577/79577
+cache: reports/cache/ER52_ImpactWithBicuculline
+correlograms: PASS
+RESULT ER52_ImpactWithBicuculline correlograms PASS
+===== ER52_ImpactWithBicuculline metrics 2026-09-22T16:55:44+00:00 =====
+uniformity decisions: 238050/238050
+uniformity p worst rel (p>|1e-300|): 3.525e-11
+leaderProb abs<=1e-12: 222600/222600
+peak counts vs RecordingMetrics: 236327/238050 (99.2762%)
+peak locations where counts agree: 227465/236327
+peak counts: reported only (Jak gate); 99.2762% vs RecordingMetrics (matrix vs column smoothdata ULPs — see PORT_NOTES.md)
+metrics: PASS
+RESULT ER52_ImpactWithBicuculline metrics PASS
+===== ER52_ImpactWithBicuculline summary 2026-09-22T16:56:34+00:00 =====
+regions: 50
+LF fractions: classify(ref) vs independent recompute: worst abs 0.000e+00
+LF fractions: classify(python metrics) vs classify(ref): worst abs 8.587e-04
+unif fractions: classify(python) vs classify(ref): worst abs 0.000e+00
+LF classes: ('Weak', 'Fairly Weak', 'Intermediate', 'Fairly Strong', 'Strong')
+uniformity classes: ('Nonuniform', 'Uniform')
+NOTE: LF class fractions py vs ref differ by 8.587e-04 (bin-edge ULP from leaderProb ~1e-14; not a Stage 5 fail bar)
+summary: PASS
+RESULT ER52_ImpactWithBicuculline summary PASS
+===== JMSM_ImpactWithoutBicuculline correlograms 2026-09-22T16:57:24+00:00 =====
+searchsorted vs brute-force: bit-identical counts on region0 pair (0,1)
+names match all regions: True
+n_events exact pairs: 110946/110946
+bin match: 221971384/222002946 (99.985783%)
+differing pair-columns explained by edge ties: 11919/11919
+cache: reports/cache/JMSM_ImpactWithoutBicuculline
+correlograms: PASS
+RESULT JMSM_ImpactWithoutBicuculline correlograms PASS
+===== JMSM_ImpactWithoutBicuculline metrics 2026-09-22T16:58:32+00:00 =====
+uniformity decisions: 110946/110946
+uniformity p worst rel (p>|1e-300|): 2.507e-11
+leaderProb abs<=1e-12: 103502/103502
+peak counts vs RecordingMetrics: 99560/110946 (89.7373%)
+peak locations where counts agree: 76117/99560
+peak counts: reported only (Jak gate); 89.7373% vs RecordingMetrics (matrix vs column smoothdata ULPs — see PORT_NOTES.md)
+metrics: PASS
+RESULT JMSM_ImpactWithoutBicuculline metrics PASS
+===== JMSM_ImpactWithoutBicuculline summary 2026-09-22T16:58:48+00:00 =====
+regions: 66
+LF fractions: classify(ref) vs independent recompute: worst abs 0.000e+00
+LF fractions: classify(python metrics) vs classify(ref): worst abs 6.139e-03
+unif fractions: classify(python) vs classify(ref): worst abs 0.000e+00
+LF classes: ('Weak', 'Fairly Weak', 'Intermediate', 'Fairly Strong', 'Strong')
+uniformity classes: ('Nonuniform', 'Uniform')
+NOTE: LF class fractions py vs ref differ by 6.139e-03 (bin-edge ULP from leaderProb ~1e-14; not a Stage 5 fail bar)
+summary: PASS
+RESULT JMSM_ImpactWithoutBicuculline summary PASS
+===== SM_pHshock correlograms 2026-09-22T16:59:03+00:00 =====
+searchsorted vs brute-force: bit-identical counts on region0 pair (0,1)
+names match all regions: True
+n_events exact pairs: 202300/202300
+bin match: 404750072/404802300 (99.987098%)
+differing pair-columns explained by edge ties: 20964/20964
+cache: reports/cache/SM_pHshock
+correlograms: PASS
+RESULT SM_pHshock correlograms PASS
+===== SM_pHshock metrics 2026-09-22T17:02:01+00:00 =====
+uniformity decisions: 202300/202300
+uniformity p worst rel (p>|1e-300|): 3.257e-11
+leaderProb abs<=1e-12: 186137/186137
+peak counts vs RecordingMetrics: 180409/202300 (89.1789%)
+peak locations where counts agree: 142467/180409
+peak counts: reported only (Jak gate); 89.1789% vs RecordingMetrics (matrix vs column smoothdata ULPs — see PORT_NOTES.md)
+metrics: PASS
+RESULT SM_pHshock metrics PASS
+===== SM_pHshock summary 2026-09-22T17:02:50+00:00 =====
+regions: 175
+LF fractions: classify(ref) vs independent recompute: worst abs 0.000e+00
+LF fractions: classify(python metrics) vs classify(ref): worst abs 9.091e-03
+unif fractions: classify(python) vs classify(ref): worst abs 0.000e+00
+LF classes: ('Weak', 'Fairly Weak', 'Intermediate', 'Fairly Strong', 'Strong')
+uniformity classes: ('Nonuniform', 'Uniform')
+NOTE: LF class fractions py vs ref differ by 9.091e-03 (bin-edge ULP from leaderProb ~1e-14; not a Stage 5 fail bar)
+summary: PASS
+RESULT SM_pHshock summary PASS
+==== STAGE6 DONE 2026-09-22T17:03:37+00:00 ====

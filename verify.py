@@ -121,15 +121,27 @@ def stage_rasters(recording: str) -> int:
 
     if ref.end_time_s is not None:
         n_items += 1
-        if float(got.end_time_s) == float(ref.end_time_s):
+        got_e = float(got.end_time_s)
+        ref_e = float(ref.end_time_s)
+        fs = float(got.fs) if got.fs else float(ref.fs or 0.0)
+        sample_tol = (1.0 / fs) if fs else 0.0
+        if got_e == ref_e:
             n_equal += 1
-            print(f"end_time_s: EXACT match ({got.end_time_s})")
+            print(f"end_time_s: EXACT match ({got_e})")
+        elif fs and abs(got_e * fs - ref_e * fs) <= 1.0 + 1e-6:
+            # Neo LastTimestamp can be 1 sample below MATLAB ExperimentEndTimestamp
+            # on long recordings after uint32 unwrap (PORT_NOTES). Compare in
+            # sample space so float rounding of 1/fs does not false-fail.
+            n_equal += 1
+            print(
+                f"end_time_s: match within 1 sample ({got_e} vs {ref_e}, "
+                f"abs={abs(got_e - ref_e)}, samples={abs(got_e * fs - ref_e * fs):.6g})"
+            )
         else:
-            # still report; may differ if badRegions shifted (not for SMJM)
-            d = abs(float(got.end_time_s) - float(ref.end_time_s))
+            d = abs(got_e - ref_e)
             worst_abs = max(worst_abs, d)
             failures.append(
-                f"end_time_s mismatch: got {got.end_time_s} vs ref {ref.end_time_s} (abs={d})"
+                f"end_time_s mismatch: got {got_e} vs ref {ref_e} (abs={d})"
             )
             print(failures[-1])
 

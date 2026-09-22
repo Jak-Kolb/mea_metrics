@@ -1,0 +1,27 @@
+===== SM_pHshock regions =====
+num_regions: EXACT match (175)
+regions_min: EXACT match shape=(175, 2)
+regions_sec: EXACT match shape=(175, 2)
+stats: computed for 175 regions (smoke OK)
+
+regions summary: 3/3 exact (100.0000%)
+regions: PASS (exact match to AnalysisRegions)
+EXIT:0
+===== ER52_ImpactWithBicuculline regions =====
+num_regions: EXACT match (50)
+regions_min: EXACT match shape=(50, 2)
+regions_sec: EXACT match shape=(50, 2)
+stats: computed for 50 regions (smoke OK)
+
+regions summary: 3/3 exact (100.0000%)
+regions: PASS (exact match to AnalysisRegions)
+EXIT:0
+===== JMSM_ImpactWithoutBicuculline regions =====
+num_regions: EXACT match (66)
+regions_min: EXACT match shape=(66, 2)
+regions_sec: EXACT match shape=(66, 2)
+stats: computed for 66 regions (smoke OK)
+
+regions summary: 3/3 exact (100.0000%)
+regions: PASS (exact match to AnalysisRegions)
+EXIT:0

@@ -83,3 +83,16 @@ See `QUESTIONS.md` resolved section. Summary: `badRegionsIndicator==0` ⇒ no `b
 - Peak-count classes from min observed through `min(10, max observed)`; last class is “or More” only when max observed > 10.
 - Uniformity: Nonuniform/Uniform; empty pairs count as Nonuniform and stay in the denominator.
 - Leader/peak fractions exclude NaN entries only.
+
+## Stage 6 — plx uint32 / neo long-recording quirks
+
+- Plexon timestamps are uint32. Neo's `PlexonRawIO` may expose `_last_timestamps` and per-spike `timestamp` fields as signed values that wrap near 2^31. On long recordings (e.g. `SM_pHshock`, ~2.95e9 samples) that (1) makes `end_time_s` negative and (2) drops late spikes in neo's `_get_internal_mask`. Fix in `plx.load_plx`: reinterpret `_last_timestamps` as uint32, unwrap negative spike timestamps in `_data_blocks` by adding 2^32, then read spikes.
+- After unwrap, `ExperimentEndTimestamp` from MATLAB can still be **1 sample** above neo's last timestamp; `verify --stage rasters` accepts ≤1/fs end_time difference and notes it.
+
+## Stage 6 — multi-recording verify (JakPC, 2026-09-22)
+
+Full matrix: `reports/stage6/STAGE6_MATRIX.md` / `reports/stage6/pipeline.log`.
+
+- **Rasters / regions:** PASS on ER52_ImpactWithBicuculline, JMSM_ImpactWithoutBicuculline, SM_pHshock (Mac). SM_pHshock end_time within 1 sample after uint32 unwrap (above).
+- **Correlograms / metrics / summary:** PASS on all three (jakpc, detached). Event counts exact; residual bin diffs explained by edge ties (≥99.98% bins).
+- **Peaks (Jak gate, report-only):** ER52 **99.2762%**; JMSM **89.7373%**; SM_pHshock **89.1789%** vs `RecordingMetrics`. Same ULP / matrix-vs-column `smoothdata` story as Stage 4 — flag the ~89% pair for the review doc, do not widen tolerances.

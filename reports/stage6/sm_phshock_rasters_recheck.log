@@ -1,0 +1,9 @@
+cell_ids: EXACT match (34 units)
+unit_count: EXACT match (34)
+spike_times: 34/34 units exactly equal
+fs: EXACT match (40000.0)
+end_time_s mismatch: got 73835.122275 vs ref 73835.1223 (abs=2.5000001187436283e-05)
+
+rasters summary: 37/38 exact (97.3684%), worst_abs_diff=2.5000001187436283e-05
+FAILURES (1):
+  - end_time_s mismatch: got 73835.122275 vs ref 73835.1223 (abs=2.5000001187436283e-05)
