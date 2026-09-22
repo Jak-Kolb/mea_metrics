@@ -45,3 +45,16 @@ Per unit × window: `is_active` / `is_silent` (spike count > 0).
 ## Non-goals for A2
 
 No ML, no Plan C novel metrics, no calcium (Plan D). Topology beyond degree-on-thresholded-STTC stays for later.
+
+## Screening thresholds (B1, frozen on SMJM 2026-09-22)
+
+Applied by `python -m mea_metrics.screen`. Change here when deliberately re-frozen.
+
+| Bar | Rule |
+|---|---|
+| Baseline stability | Split-half Spearman of early vs late **baseline** regions ≥ **0.50**. Soft diagnostic: median unit CV ≤ 0.75. Window-level metrics with too few tiles may PASS on CV ≤ 0.75 if Spearman is undefined. |
+| Beyond rate | \|Spearman(metric, `rate_hz`)\| < **0.90** across unit×region rows. `rate_hz` itself is SKIP. |
+| Treatment response | \|Cohen's d\| between per-unit (or per-region) medians in **post** vs **baseline** ≥ **0.30**. *n=1 culture on SMJM; no holdout — asterisk in report.* |
+| Interpretability | Metric has a registered plain-language blurb in `screen/interpret.py` (A v1 auto-PASS). |
+
+Baseline / during / post regions are derived from `InjuryIndices` overlap with AnalysisRegions tiles.

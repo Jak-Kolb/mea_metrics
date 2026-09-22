@@ -72,3 +72,13 @@ Recordings: `SMJM_Bicuculline`, `ER52_ImpactWithBicuculline`, `JMSM_ImpactWithou
 - STTC: `sttc_mean_window`, `sttc_mean_unit`, `sttc_degree` (`dt_s=0.05`, degree thresh `0.1`)
 - Health: `is_active`, `is_silent`
 
+## Screening (Plan B)
+
+Four-bar harness on library tables (`LOCAL_PLAN` B). Thresholds frozen in `LIBRARY_NOTES.md`.
+
+```bash
+.venv/bin/python -m mea_metrics.screen --recording SMJM_Bicuculline
+```
+
+Writes `reports/screen/SCREEN_REPORT.md`. Failures stay listed as FAIL.
+
