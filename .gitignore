@@ -10,3 +10,8 @@ build/
 data
 *.tar.gz
 reports/cache/
+reports/**/*.mat
+reports/**/*.npz
+LOCAL_PLAN.md
+.DS_Store
+docs/
