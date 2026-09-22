@@ -39,3 +39,15 @@ Stages: `ref`, `rasters`, `regions`, `correlograms`, `metrics`, `summary`, `all`
 - MATLAB source wins on conflicts → document in `PORT_NOTES.md`.
 - Never commit in `original_mea_matlab` (local reference only).
 - Open items: `QUESTIONS.md`.
+
+## Metric library (Plan A)
+
+Defaults locked in `LIBRARY_NOTES.md` (region windows from AnalysisRegions).
+
+**A1 (rate / ISI)** — per unit × region: mean rate (Hz), ISI mean/median, CV_ISI:
+
+```bash
+.venv/bin/python -m mea_metrics.library A1 --recording SMJM_Bicuculline
+```
+
+Writes `reports/library/<recording>_metrics.parquet` (+ CSV preview). Bursts / STTC arrive in A2.

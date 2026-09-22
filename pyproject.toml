@@ -12,6 +12,8 @@ dependencies = [
   "numpy",
   "scipy",
   "h5py",
+  "pandas",
+  "pyarrow",
 ]
 
 [project.optional-dependencies]
