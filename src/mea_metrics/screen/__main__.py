@@ -207,11 +207,22 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--table", default=None)
     p.add_argument("--out", default=None, help="Output md path (single-recording mode)")
     p.add_argument(
+        "--comovement",
+        action="store_true",
+        help="Plan C optional: culture×Δ PCA/correlation → reports/screen/COMOVEMENT.md",
+    )
+    p.add_argument(
         "--combined-out",
         default="reports/screen/SCREEN_REPORT.md",
         help="Combined summary when --all",
     )
     args = p.parse_args(argv)
+
+    if args.comovement:
+        from mea_metrics.screen.comovement import run as run_comovement
+
+        run_comovement()
+        return 0
 
     recs = list(ALL_RECORDINGS) if args.all else [args.recording]
     summaries = []

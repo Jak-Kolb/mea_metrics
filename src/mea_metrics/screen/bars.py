@@ -70,6 +70,13 @@ def _injury_region_split(
     return np.asarray(baseline, int), np.asarray(during, int), np.asarray(post, int)
 
 
+def partition_regions(
+    df: pd.DataFrame, injury_start_s: float, injury_end_s: float
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Public alias for screen baseline / during / post region split."""
+    return _injury_region_split(df, injury_start_s, injury_end_s)
+
+
 def _spearman(a: np.ndarray, b: np.ndarray) -> float:
     a = np.asarray(a, float)
     b = np.asarray(b, float)
