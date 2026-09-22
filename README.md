@@ -42,15 +42,33 @@ Stages: `ref`, `rasters`, `regions`, `correlograms`, `metrics`, `summary`, `all`
 
 ## Metric library (Plan A)
 
-Defaults locked in `LIBRARY_NOTES.md` (region windows from AnalysisRegions).
+Defaults and parameter locks live in [`LIBRARY_NOTES.md`](LIBRARY_NOTES.md) (region windows from AnalysisRegions; burst/STTC knobs).
 
-**A1** — rate / ISI. **A2** — + max-interval bursts (`max_isi_s=0.1`, `min_spikes=3`), STTC (`dt_s=0.05`, mean over active pairs; per-unit mean + degree at thresh 0.1), basic active/silent flags.
+### Run
 
 ```bash
+# A1 path (rate/ISI; writes the same extended A2 columns today)
+.venv/bin/python -m mea_metrics.library A1 --recording SMJM_Bicuculline
+
+# A2 — rate/ISI + bursts + STTC + health (all four Adam recordings)
 .venv/bin/python -m mea_metrics.library A2 --all
-# or one recording:
+
+# or one recording
 .venv/bin/python -m mea_metrics.library A2 --recording SMJM_Bicuculline
 ```
 
-Writes `reports/library/<recording>_metrics.parquet` (+ CSV preview) for SMJM, ER52, JMSM, SM_pHshock.
+### Outputs
+
+| File | Contents |
+|---|---|
+| `reports/library/<recording>_metrics.parquet` | Full unit × region table |
+| `reports/library/<recording>_metrics_preview.csv` | First ~40 rows for eyeballing |
+
+Recordings: `SMJM_Bicuculline`, `ER52_ImpactWithBicuculline`, `JMSM_ImpactWithoutBicuculline`, `SM_pHshock`.
+
+### A2 columns (beyond A1 rate/ISI)
+
+- Bursts: `burst_count`, `burst_spike_frac`, `mean_ibi_s` (`max_isi_s=0.1`, `min_spikes=3`)
+- STTC: `sttc_mean_window`, `sttc_mean_unit`, `sttc_degree` (`dt_s=0.05`, degree thresh `0.1`)
+- Health: `is_active`, `is_silent`
 
