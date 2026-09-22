@@ -59,6 +59,15 @@ def _run_one(recording: str, table: Path | None, out: Path) -> tuple[int, Counte
         return 1, Counter(), []
 
     df = pd.read_parquet(table_path)
+    novel_path = Path("reports/library") / f"{recording}_novel.parquet"
+    if novel_path.is_file():
+        novel = pd.read_parquet(novel_path)
+        # align on unit_id × region_index; bring C columns only
+        ccols = [c for c in novel.columns if c not in df.columns]
+        keys = [k for k in ("unit_id", "region_index") if k in df.columns and k in novel.columns]
+        if keys and ccols:
+            df = df.merge(novel[keys + ccols], on=keys, how="left")
+            print(f"merged novel columns: {ccols[:8]}{'...' if len(ccols)>8 else ''}")
     ref = load_reference(recording)
     if ref.injuries is None or ref.injuries.n < 1:
         print(f"ERROR: {recording}: no InjuryIndices", file=sys.stderr)

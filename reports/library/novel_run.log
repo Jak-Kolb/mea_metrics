@@ -1,0 +1,16 @@
+=== novel SMJM_Bicuculline ===
+injury=Bicuculline  tau_rec_burst_s=nan  tau_rec_rate_s=nan
+burst_rate ratios post0/mid/last=2.71/1.852/1.716
+wrote reports/library/SMJM_Bicuculline_novel.parquet
+=== novel ER52_ImpactWithBicuculline ===
+injury=Impact Injury  tau_rec_burst_s=420  tau_rec_rate_s=420
+burst_rate ratios post0/mid/last=0.8596/1.126/1.127
+wrote reports/library/ER52_ImpactWithBicuculline_novel.parquet
+=== novel JMSM_ImpactWithoutBicuculline ===
+injury=Impact  tau_rec_burst_s=nan  tau_rec_rate_s=nan
+burst_rate ratios post0/mid/last=0.6078/0.4835/0.3569
+wrote reports/library/JMSM_ImpactWithoutBicuculline_novel.parquet
+=== novel SM_pHshock ===
+injury=CO_2 Shutoff  tau_rec_burst_s=120  tau_rec_rate_s=3.876e+04
+burst_rate ratios post0/mid/last=0.972/0.8853/0.1557
+wrote reports/library/SM_pHshock_novel.parquet

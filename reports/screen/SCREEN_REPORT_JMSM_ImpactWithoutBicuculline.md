@@ -32,6 +32,12 @@ Failed bars stay listed as **FAIL** (lab rule).
 | `sttc_degree` | PASS | PASS | PASS | PASS |
 | `n_spikes` | PASS | **FAIL** | PASS | PASS |
 | `sttc_mean_window` | **FAIL** | PASS | PASS | PASS |
+| `sttc_rate_resid_window` | **FAIL** | PASS | **FAIL** | PASS |
+| `sttc_rate_resid_unit` | PASS | PASS | PASS | PASS |
+| `sttc_degree_delta` | PASS | PASS | **FAIL** | PASS |
+| `sttc_mean_unit_delta` | PASS | PASS | **FAIL** | PASS |
+| `rate_hz_delta` | PASS | PASS | **FAIL** | PASS |
+| `burst_count_delta` | PASS | PASS | **FAIL** | PASS |
 
 ## Detail notes
 
@@ -39,75 +45,117 @@ Failed bars stay listed as **FAIL** (lab rule).
 
 - **baseline_stability**: PASS (score=0.9021; Spearman≥0.5) — unit split-half Spearman=0.902; median unit CV=0.159
 - **beyond_rate**: SKIP (score=nan; |ρ|<0.9) — reference rate metric — bar 2 not applicable
-- **treatment_response**: PASS (score=0.4503; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.450  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.4503; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.450  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Mean spike rate in the region window (spikes/s).
 
 ### `isi_mean_s`
 
 - **baseline_stability**: PASS (score=0.8962; Spearman≥0.5) — unit split-half Spearman=0.896; median unit CV=0.162
 - **beyond_rate**: FAIL (score=0.9975; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=-0.997
-- **treatment_response**: PASS (score=0.514; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.514  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.514; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.514  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Mean inter-spike interval among spikes in the window.
 
 ### `isi_median_s`
 
 - **baseline_stability**: PASS (score=0.8495; Spearman≥0.5) — unit split-half Spearman=0.850; median unit CV=0.347
 - **beyond_rate**: PASS (score=0.8985; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=-0.899
-- **treatment_response**: PASS (score=0.5504; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.550  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.5504; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.550  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Median inter-spike interval in the window (robust to outliers).
 
 ### `cv_isi`
 
 - **baseline_stability**: PASS (score=0.8559; Spearman≥0.5) — unit split-half Spearman=0.856; median unit CV=0.103
 - **beyond_rate**: PASS (score=0.5128; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.513
-- **treatment_response**: PASS (score=0.8789; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.879  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.8789; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.879  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Coefficient of variation of ISIs (std/mean); irregularity of firing.
 
 ### `burst_count`
 
 - **baseline_stability**: PASS (score=0.8914; Spearman≥0.5) — unit split-half Spearman=0.891; median unit CV=0.281
 - **beyond_rate**: FAIL (score=0.9413; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.941
-- **treatment_response**: PASS (score=0.4396; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.440  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.4396; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.440  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Count of max-interval bursts (ISI≤0.1 s, ≥3 spikes) in the window.
 
 ### `burst_spike_frac`
 
 - **baseline_stability**: PASS (score=0.8289; Spearman≥0.5) — unit split-half Spearman=0.829; median unit CV=0.189
 - **beyond_rate**: PASS (score=0.7628; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.763
-- **treatment_response**: PASS (score=0.5746; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.575  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.5746; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.575  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Fraction of spikes that fall inside detected bursts.
 
 ### `mean_ibi_s`
 
 - **baseline_stability**: PASS (score=0.8538; Spearman≥0.5) — unit split-half Spearman=0.854; median unit CV=0.342
 - **beyond_rate**: PASS (score=0.8682; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=-0.868
-- **treatment_response**: PASS (score=0.4775; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.478  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.4775; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.478  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Mean inter-burst interval (NaN if fewer than 2 bursts).
 
 ### `sttc_mean_unit`
 
 - **baseline_stability**: PASS (score=0.9582; Spearman≥0.5) — unit split-half Spearman=0.958; median unit CV=0.081
 - **beyond_rate**: PASS (score=0.6924; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.692
-- **treatment_response**: PASS (score=0.7305; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.730  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.7305; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.730  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — This unit's mean STTC to other active units in the window.
 
 ### `sttc_degree`
 
 - **baseline_stability**: PASS (score=0.9248; Spearman≥0.5) — unit split-half Spearman=0.925; median unit CV=0.062
 - **beyond_rate**: PASS (score=0.7951; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.795
-- **treatment_response**: PASS (score=0.3703; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.370  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.3703; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.370  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Count of partners with STTC > 0.1 (thin topology on thresholded STTC).
 
 ### `n_spikes`
 
 - **baseline_stability**: PASS (score=0.902; Spearman≥0.5) — unit split-half Spearman=0.902; median unit CV=0.159
 - **beyond_rate**: FAIL (score=1; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=1.000
-- **treatment_response**: PASS (score=0.4503; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.450  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=0.4503; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.450  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Raw spike count in the window (reference; expected to track rate closely).
 
 ### `sttc_mean_window`
 
 - **baseline_stability**: FAIL (score=0.1678; Spearman≥0.5) — window split-half Spearman=0.168; CV across baseline=0.037
 - **beyond_rate**: PASS (score=0.2049; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.205
-- **treatment_response**: PASS (score=2.155; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-2.155  *n=1 culture (SMJM), no holdout yet*
+- **treatment_response**: PASS (score=2.155; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-2.155  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 - **interpretability**: PASS (score=1; blurb registered) — Mean Spike Time Tiling Coefficient over active unit pairs in the window.
+
+### `sttc_rate_resid_window`
+
+- **baseline_stability**: FAIL (score=-0.4545; Spearman≥0.5) — window split-half Spearman=-0.455; CV across baseline=1.761
+- **beyond_rate**: PASS (score=0.0738; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.074
+- **treatment_response**: FAIL (score=0.269; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.269  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+- **interpretability**: PASS (score=1; blurb registered) — Window mean STTC residualized against window mean rate.
+
+### `sttc_rate_resid_unit`
+
+- **baseline_stability**: PASS (score=0.9103; Spearman≥0.5) — unit split-half Spearman=0.910; median unit CV=-0.177
+- **beyond_rate**: PASS (score=0.222; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.222
+- **treatment_response**: PASS (score=0.5583; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=-0.558  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+- **interpretability**: PASS (score=1; blurb registered) — STTC (unit mean) residualized against firing rate — sync beyond rate.
+
+### `sttc_degree_delta`
+
+- **baseline_stability**: PASS (score=1; Spearman≥0.5) — unit split-half Spearman=1.000; median unit CV=0.000
+- **beyond_rate**: PASS (score=0.07682; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.077
+- **treatment_response**: FAIL (score=0; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+- **interpretability**: PASS (score=1; blurb registered) — Post−baseline change in STTC degree (partners with STTC>0.1).
+
+### `sttc_mean_unit_delta`
+
+- **baseline_stability**: PASS (score=1; Spearman≥0.5) — unit split-half Spearman=1.000; median unit CV=0.000
+- **beyond_rate**: PASS (score=0.09153; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=-0.092
+- **treatment_response**: FAIL (score=0; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+- **interpretability**: PASS (score=1; blurb registered) — Post−baseline change in unit mean STTC.
+
+### `rate_hz_delta`
+
+- **baseline_stability**: PASS (score=1; Spearman≥0.5) — unit split-half Spearman=1.000; median unit CV=0.000
+- **beyond_rate**: PASS (score=0.2536; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=-0.254
+- **treatment_response**: FAIL (score=0; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+- **interpretability**: PASS (score=1; blurb registered) — Post−baseline change in mean firing rate.
+
+### `burst_count_delta`
+
+- **baseline_stability**: PASS (score=1; Spearman≥0.5) — unit split-half Spearman=1.000; median unit CV=0.000
+- **beyond_rate**: PASS (score=0.3303; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=-0.330
+- **treatment_response**: FAIL (score=0; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+- **interpretability**: PASS (score=1; blurb registered) — Post−baseline change in burst count.

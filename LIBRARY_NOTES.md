@@ -58,3 +58,13 @@ Applied by `python -m mea_metrics.screen`. Change here when deliberately re-froz
 | Interpretability | Metric has a registered plain-language blurb in `screen/interpret.py` (A v1 auto-PASS). |
 
 Baseline / during / post regions are derived from `InjuryIndices` overlap with AnalysisRegions tiles.
+
+## Plan C novel metrics (2026-09-22)
+
+Implemented (no LOO classifiers; n=4 cultures):
+
+1. **Recovery-time / return-to-baseline** (`tau_rec_burst_s`, `tau_rec_rate_s`): first post region where network burst-rate (or mean rate) re-enters baseline mean ± 1 SD. Also post/baseline ratios at first/mid/last post regions. Grid-limited by AnalysisRegions tiles.
+2. **Rate-normalized STTC** (`sttc_rate_resid_unit`, `sttc_rate_resid_window`): linear residual of STTC vs firing rate.
+3. **Topology deltas (v1)** (`sttc_degree_delta`, plus rate/burst/STTC unit deltas): post median − baseline median per unit.
+
+Outputs: `reports/library/<recording>_novel.parquet`. Screened via B harness when novel file present.

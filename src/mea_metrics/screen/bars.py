@@ -28,8 +28,15 @@ UNIT_METRICS: Sequence[str] = (
     "sttc_degree",
     "n_spikes",
 )
-WINDOW_METRICS: Sequence[str] = ("sttc_mean_window",)
-ALL_METRICS: Sequence[str] = tuple(list(UNIT_METRICS) + list(WINDOW_METRICS))
+WINDOW_METRICS: Sequence[str] = ("sttc_mean_window", "sttc_rate_resid_window")
+NOVEL_METRICS: Sequence[str] = (
+    "sttc_rate_resid_unit",
+    "sttc_degree_delta",
+    "sttc_mean_unit_delta",
+    "rate_hz_delta",
+    "burst_count_delta",
+)
+ALL_METRICS: Sequence[str] = tuple(list(UNIT_METRICS) + list(WINDOW_METRICS) + list(NOVEL_METRICS))
 
 
 @dataclass

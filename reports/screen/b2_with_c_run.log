@@ -1,0 +1,77 @@
+merged novel columns: ['sttc_rate_resid_unit', 'sttc_rate_resid_window', 'sttc_degree_delta', 'sttc_mean_unit_delta', 'rate_hz_delta', 'burst_count_delta', 'tau_rec_burst_s', 'tau_rec_rate_s']...
+=== SMJM_Bicuculline ===
+wrote reports/screen/SCREEN_REPORT_SMJM_Bicuculline.md
+injury: Bicuculline [3480, 3540] s
+regions baseline=[np.int64(0), np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5), np.int64(6), np.int64(7)] during=[np.int64(8)] post=[np.int64(9), np.int64(10), np.int64(11), np.int64(12), np.int64(13)]
+bars: PASS=56 FAIL=11 SKIP=1
+  FAIL isi_mean_s/beyond_rate: Spearman(metric, rate_hz)=-0.997
+  FAIL isi_mean_s/treatment_response: Cohen_d(post−baseline)=-0.254  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+  FAIL isi_median_s/treatment_response: Cohen_d(post−baseline)=-0.104  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+  FAIL burst_count/beyond_rate: Spearman(metric, rate_hz)=0.929
+  FAIL mean_ibi_s/beyond_rate: Spearman(metric, rate_hz)=-0.909
+  FAIL n_spikes/beyond_rate: Spearman(metric, rate_hz)=1.000
+  FAIL sttc_rate_resid_window/treatment_response: Cohen_d(post−baseline)=0.109  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+  FAIL sttc_degree_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+  FAIL sttc_mean_unit_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+  FAIL rate_hz_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+  FAIL burst_count_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+merged novel columns: ['sttc_rate_resid_unit', 'sttc_rate_resid_window', 'sttc_degree_delta', 'sttc_mean_unit_delta', 'rate_hz_delta', 'burst_count_delta', 'tau_rec_burst_s', 'tau_rec_rate_s']...
+=== ER52_ImpactWithBicuculline ===
+wrote reports/screen/SCREEN_REPORT_ER52_ImpactWithBicuculline.md
+injury: Impact Injury [12180, 12600] s (InjuryIndices n=2; using #1 'Impact Injury')
+regions baseline=[np.int64(0), np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5), np.int64(6), np.int64(7), np.int64(8), np.int64(9), np.int64(10), np.int64(11), np.int64(12), np.int64(13), np.int64(14), np.int64(15), np.int64(16), np.int64(17), np.int64(18), np.int64(19), np.int64(20), np.int64(21), np.int64(22), np.int64(23), np.int64(24), np.int64(25), np.int64(26), np.int64(27), np.int64(28)] during=[] post=[np.int64(29), np.int64(30), np.int64(31), np.int64(32), np.int64(33), np.int64(34), np.int64(35), np.int64(36), np.int64(37), np.int64(38), np.int64(39), np.int64(40), np.int64(41), np.int64(42), np.int64(43), np.int64(44), np.int64(45), np.int64(46), np.int64(47), np.int64(48), np.int64(49)]
+bars: PASS=46 FAIL=21 SKIP=1
+  FAIL rate_hz/treatment_response: Cohen_d(post−baseline)=-0.002  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL isi_mean_s/beyond_rate: Spearman(metric, rate_hz)=-0.998
+  FAIL isi_mean_s/treatment_response: Cohen_d(post−baseline)=-0.151  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL isi_median_s/beyond_rate: Spearman(metric, rate_hz)=-0.923
+  FAIL isi_median_s/treatment_response: Cohen_d(post−baseline)=-0.138  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL cv_isi/beyond_rate: Spearman(metric, rate_hz)=0.973
+  FAIL cv_isi/treatment_response: Cohen_d(post−baseline)=-0.079  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL burst_count/treatment_response: Cohen_d(post−baseline)=0.130  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL burst_spike_frac/beyond_rate: Spearman(metric, rate_hz)=0.950
+  FAIL burst_spike_frac/treatment_response: Cohen_d(post−baseline)=0.009  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL mean_ibi_s/treatment_response: Cohen_d(post−baseline)=-0.106  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL sttc_mean_unit/treatment_response: Cohen_d(post−baseline)=0.187  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL n_spikes/beyond_rate: Spearman(metric, rate_hz)=1.000
+  FAIL n_spikes/treatment_response: Cohen_d(post−baseline)=-0.002  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL sttc_mean_window/baseline_stability: window split-half Spearman=0.033; CV across baseline=0.036
+  FAIL sttc_rate_resid_window/baseline_stability: window split-half Spearman=-0.538; CV across baseline=-1.696
+  FAIL sttc_rate_resid_unit/treatment_response: Cohen_d(post−baseline)=0.197  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL sttc_degree_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL sttc_mean_unit_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL rate_hz_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+  FAIL burst_count_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
+merged novel columns: ['sttc_rate_resid_unit', 'sttc_rate_resid_window', 'sttc_degree_delta', 'sttc_mean_unit_delta', 'rate_hz_delta', 'burst_count_delta', 'tau_rec_burst_s', 'tau_rec_rate_s']...
+=== JMSM_ImpactWithoutBicuculline ===
+wrote reports/screen/SCREEN_REPORT_JMSM_ImpactWithoutBicuculline.md
+injury: Impact [10260, 10860] s (InjuryIndices n=4; using #0 'Impact')
+regions baseline=[np.int64(0), np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5), np.int64(6), np.int64(7), np.int64(8), np.int64(9), np.int64(10), np.int64(11), np.int64(12), np.int64(13), np.int64(14), np.int64(15), np.int64(16), np.int64(17), np.int64(18), np.int64(19), np.int64(20), np.int64(21), np.int64(22), np.int64(23)] during=[] post=[np.int64(24), np.int64(25), np.int64(26), np.int64(27), np.int64(28), np.int64(29), np.int64(30), np.int64(31), np.int64(32), np.int64(33), np.int64(34), np.int64(35), np.int64(36), np.int64(37), np.int64(38), np.int64(39), np.int64(40), np.int64(41), np.int64(42), np.int64(43), np.int64(44), np.int64(45), np.int64(46), np.int64(47), np.int64(48), np.int64(49), np.int64(50), np.int64(51), np.int64(52), np.int64(53), np.int64(54), np.int64(55), np.int64(56), np.int64(57), np.int64(58), np.int64(59), np.int64(60), np.int64(61), np.int64(62), np.int64(63), np.int64(64), np.int64(65)]
+bars: PASS=57 FAIL=10 SKIP=1
+  FAIL isi_mean_s/beyond_rate: Spearman(metric, rate_hz)=-0.997
+  FAIL burst_count/beyond_rate: Spearman(metric, rate_hz)=0.941
+  FAIL n_spikes/beyond_rate: Spearman(metric, rate_hz)=1.000
+  FAIL sttc_mean_window/baseline_stability: window split-half Spearman=0.168; CV across baseline=0.037
+  FAIL sttc_rate_resid_window/baseline_stability: window split-half Spearman=-0.455; CV across baseline=1.761
+  FAIL sttc_rate_resid_window/treatment_response: Cohen_d(post−baseline)=-0.269  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+  FAIL sttc_degree_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+  FAIL sttc_mean_unit_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+  FAIL rate_hz_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+  FAIL burst_count_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
+merged novel columns: ['sttc_rate_resid_unit', 'sttc_rate_resid_window', 'sttc_degree_delta', 'sttc_mean_unit_delta', 'rate_hz_delta', 'burst_count_delta', 'tau_rec_burst_s', 'tau_rec_rate_s']...
+=== SM_pHshock ===
+wrote reports/screen/SCREEN_REPORT_SM_pHshock.md
+injury: CO_2 Shutoff [2400, 2400] s
+regions baseline=[np.int64(0), np.int64(1), np.int64(2), np.int64(3), np.int64(4)] during=[np.int64(5)] post=[np.int64(6), np.int64(7), np.int64(8), np.int64(9), np.int64(10), np.int64(11), np.int64(12), np.int64(13), np.int64(14), np.int64(15), np.int64(16), np.int64(17), np.int64(18), np.int64(19), np.int64(20), np.int64(21), np.int64(22), np.int64(23), np.int64(24), np.int64(25), np.int64(26), np.int64(27), np.int64(28), np.int64(29), np.int64(30), np.int64(31), np.int64(32), np.int64(33), np.int64(34), np.int64(35), np.int64(36), np.int64(37), np.int64(38), np.int64(39), np.int64(40), np.int64(41), np.int64(42), np.int64(43), np.int64(44), np.int64(45), np.int64(46), np.int64(47), np.int64(48), np.int64(49), np.int64(50), np.int64(51), np.int64(52), np.int64(53), np.int64(54), np.int64(55), np.int64(56), np.int64(57), np.int64(58), np.int64(59), np.int64(60), np.int64(61), np.int64(62), np.int64(63), np.int64(64), np.int64(65), np.int64(66), np.int64(67), np.int64(68), np.int64(69), np.int64(70), np.int64(71), np.int64(72), np.int64(73), np.int64(74), np.int64(75), np.int64(76), np.int64(77), np.int64(78), np.int64(79), np.int64(80), np.int64(81), np.int64(82), np.int64(83), np.int64(84), np.int64(85), np.int64(86), np.int64(87), np.int64(88), np.int64(89), np.int64(90), np.int64(91), np.int64(92), np.int64(93), np.int64(94), np.int64(95), np.int64(96), np.int64(97), np.int64(98), np.int64(99), np.int64(100), np.int64(101), np.int64(102), np.int64(103), np.int64(104), np.int64(105), np.int64(106), np.int64(107), np.int64(108), np.int64(109), np.int64(110), np.int64(111), np.int64(112), np.int64(113), np.int64(114), np.int64(115), np.int64(116), np.int64(117), np.int64(118), np.int64(119), np.int64(120), np.int64(121), np.int64(122), np.int64(123), np.int64(124), np.int64(125), np.int64(126), np.int64(127), np.int64(128), np.int64(129), np.int64(130), np.int64(131), np.int64(132), np.int64(133), np.int64(134), np.int64(135), np.int64(136), np.int64(137), np.int64(138), np.int64(139), np.int64(140), np.int64(141), np.int64(142), np.int64(143), np.int64(144), np.int64(145), np.int64(146), np.int64(147), np.int64(148), np.int64(149), np.int64(150), np.int64(151), np.int64(152), np.int64(153), np.int64(154), np.int64(155), np.int64(156), np.int64(157), np.int64(158), np.int64(159), np.int64(160), np.int64(161), np.int64(162), np.int64(163), np.int64(164), np.int64(165), np.int64(166), np.int64(167), np.int64(168), np.int64(169), np.int64(170), np.int64(171), np.int64(172), np.int64(173), np.int64(174)]
+bars: PASS=57 FAIL=10 SKIP=1
+  FAIL isi_mean_s/beyond_rate: Spearman(metric, rate_hz)=-1.000
+  FAIL isi_median_s/beyond_rate: Spearman(metric, rate_hz)=-0.954
+  FAIL burst_count/beyond_rate: Spearman(metric, rate_hz)=0.933
+  FAIL mean_ibi_s/treatment_response: Cohen_d(post−baseline)=0.077  *n=1 culture (SM_pHshock), no holdout yet*
+  FAIL sttc_degree/treatment_response: Cohen_d(post−baseline)=-0.200  *n=1 culture (SM_pHshock), no holdout yet*
+  FAIL n_spikes/beyond_rate: Spearman(metric, rate_hz)=1.000
+  FAIL sttc_degree_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (SM_pHshock), no holdout yet*
+  FAIL sttc_mean_unit_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (SM_pHshock), no holdout yet*
+  FAIL rate_hz_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (SM_pHshock), no holdout yet*
+  FAIL burst_count_delta/treatment_response: Cohen_d(post−baseline)=0.000  *n=1 culture (SM_pHshock), no holdout yet*
+wrote combined reports/screen/SCREEN_REPORT.md

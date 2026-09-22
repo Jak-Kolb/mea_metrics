@@ -14,6 +14,14 @@ METRIC_BLURBS = {
     "sttc_mean_unit": "This unit's mean STTC to other active units in the window.",
     "sttc_degree": "Count of partners with STTC > 0.1 (thin topology on thresholded STTC).",
     "n_spikes": "Raw spike count in the window (reference; expected to track rate closely).",
+
+    # Plan C
+    "sttc_rate_resid_unit": "STTC (unit mean) residualized against firing rate — sync beyond rate.",
+    "sttc_rate_resid_window": "Window mean STTC residualized against window mean rate.",
+    "sttc_degree_delta": "Post−baseline change in STTC degree (partners with STTC>0.1).",
+    "sttc_mean_unit_delta": "Post−baseline change in unit mean STTC.",
+    "rate_hz_delta": "Post−baseline change in mean firing rate.",
+    "burst_count_delta": "Post−baseline change in burst count.",
 }
 
 

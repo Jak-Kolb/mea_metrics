@@ -83,3 +83,12 @@ Four-bar harness on library tables (`LOCAL_PLAN` B). Thresholds frozen in `LIBRA
 
 Writes `reports/screen/SCREEN_REPORT.md`. Failures stay listed as FAIL.
 
+## Novel metrics (Plan C)
+
+Recovery-time, rate-normalized STTC, and STTC-degree deltas (see `LIBRARY_NOTES.md`). No LOO classifiers.
+
+```bash
+.venv/bin/python -m mea_metrics.novel --all
+.venv/bin/python -m mea_metrics.screen --all   # merges *_novel.parquet when present
+```
+
