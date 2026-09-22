@@ -29,4 +29,19 @@ Per unit × region window: mean rate (Hz), ISI mean/median, CV_ISI (NaN if <2 IS
 
 ## Non-goals for A1
 
-No ML, no novel recovery/topology metrics yet (Plan C), no calcium (Plan D).
+A1 shipped rate/ISI only. Bursts/STTC/health arrived in A2.
+
+## STTC params (A2)
+
+- `dt_s = 0.05` (50 ms tiling half-width; common culture default).
+- Exclude silent units (0 spikes in the window) from pairs.
+- Per window: `sttc_mean_window` = mean over active pairs.
+- Per unit: `sttc_mean_unit` = mean STTC to other active units; `sttc_degree` = count of partners with STTC > `0.1` (thin topology v1).
+
+## Electrode health (A2, basic)
+
+Per unit × window: `is_active` / `is_silent` (spike count > 0).
+
+## Non-goals for A2
+
+No ML, no Plan C novel metrics, no calcium (Plan D). Topology beyond degree-on-thresholded-STTC stays for later.

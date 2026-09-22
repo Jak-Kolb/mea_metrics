@@ -44,10 +44,13 @@ Stages: `ref`, `rasters`, `regions`, `correlograms`, `metrics`, `summary`, `all`
 
 Defaults locked in `LIBRARY_NOTES.md` (region windows from AnalysisRegions).
 
-**A1 (rate / ISI)** — per unit × region: mean rate (Hz), ISI mean/median, CV_ISI:
+**A1** — rate / ISI. **A2** — + max-interval bursts (`max_isi_s=0.1`, `min_spikes=3`), STTC (`dt_s=0.05`, mean over active pairs; per-unit mean + degree at thresh 0.1), basic active/silent flags.
 
 ```bash
-.venv/bin/python -m mea_metrics.library A1 --recording SMJM_Bicuculline
+.venv/bin/python -m mea_metrics.library A2 --all
+# or one recording:
+.venv/bin/python -m mea_metrics.library A2 --recording SMJM_Bicuculline
 ```
 
-Writes `reports/library/<recording>_metrics.parquet` (+ CSV preview). Bursts / STTC arrive in A2.
+Writes `reports/library/<recording>_metrics.parquet` (+ CSV preview) for SMJM, ER52, JMSM, SM_pHshock.
+

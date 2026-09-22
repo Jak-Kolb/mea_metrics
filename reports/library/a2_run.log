@@ -1,0 +1,44 @@
+=== SMJM_Bicuculline ===
+rows: 700  units: 50  regions: 14
+shape check: 50×14 = 700
+finite rates: 700/700
+finite sttc_mean_window rows: 700/700
+rate_hz min/median/max: 0 / 0.731684 / 17.2458
+sttc_mean_window (per region) min/median/max: 0.3375 / 0.36522 / 0.704945
+burst_count sum: 31532
+elapsed_s: 9.9
+wrote reports/library/SMJM_Bicuculline_metrics.parquet
+wrote reports/library/SMJM_Bicuculline_metrics_preview.csv
+=== ER52_ImpactWithBicuculline ===
+rows: 3450  units: 69  regions: 50
+shape check: 69×50 = 3450
+finite rates: 3450/3450
+finite sttc_mean_window rows: 3450/3450
+rate_hz min/median/max: 0 / 2.88979 / 15.3368
+sttc_mean_window (per region) min/median/max: 0.718057 / 0.780893 / 0.799961
+burst_count sum: 475924
+elapsed_s: 169.1
+wrote reports/library/ER52_ImpactWithBicuculline_metrics.parquet
+wrote reports/library/ER52_ImpactWithBicuculline_metrics_preview.csv
+=== JMSM_ImpactWithoutBicuculline ===
+rows: 2706  units: 41  regions: 66
+shape check: 41×66 = 2706
+finite rates: 2706/2706
+finite sttc_mean_window rows: 2706/2706
+rate_hz min/median/max: 0 / 0.788884 / 9.70018
+sttc_mean_window (per region) min/median/max: 0.117495 / 0.197207 / 0.22768
+burst_count sum: 136725
+elapsed_s: 29.7
+wrote reports/library/JMSM_ImpactWithoutBicuculline_metrics.parquet
+wrote reports/library/JMSM_ImpactWithoutBicuculline_metrics_preview.csv
+=== SM_pHshock ===
+rows: 5950  units: 34  regions: 175
+shape check: 34×175 = 5950
+finite rates: 5950/5950
+finite sttc_mean_window rows: 5950/5950
+rate_hz min/median/max: 0 / 0.807951 / 12.2313
+sttc_mean_window (per region) min/median/max: 0.0305133 / 0.25724 / 0.377932
+burst_count sum: 294649
+elapsed_s: 103.5
+wrote reports/library/SM_pHshock_metrics.parquet
+wrote reports/library/SM_pHshock_metrics_preview.csv
