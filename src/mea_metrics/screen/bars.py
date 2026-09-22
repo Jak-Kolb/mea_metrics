@@ -169,6 +169,8 @@ def bar_treatment(
     metric: str,
     baseline_regions: np.ndarray,
     post_regions: np.ndarray,
+    *,
+    recording: str | None = None,
 ) -> BarResult:
     if post_regions.size == 0 or baseline_regions.size == 0:
         return BarResult(metric, "treatment_response", "SKIP", float("nan"), "n/a", "no baseline or post regions")
@@ -190,7 +192,7 @@ def bar_treatment(
         status,
         float(abs(d)) if np.isfinite(d) else float("nan"),
         f"|Cohen_d|≥{TREATMENT_MIN_ABS_COHEN_D}",
-        f"Cohen_d(post−baseline)={d:.3f}  *n=1 culture (SMJM), no holdout yet*",
+        f"Cohen_d(post−baseline)={d:.3f}  *n=1 culture ({recording or 'unknown'}), no holdout yet*",
     )
 
 
@@ -205,6 +207,7 @@ def screen_recording(
     injury_start_s: float,
     injury_end_s: float,
     metrics: Optional[Sequence[str]] = None,
+    recording: Optional[str] = None,
 ) -> Tuple[List[BarResult], np.ndarray, np.ndarray, np.ndarray]:
     metrics_list = list(metrics) if metrics is not None else list(ALL_METRICS)
     baseline, during, post = _injury_region_split(df, injury_start_s, injury_end_s)
@@ -216,6 +219,7 @@ def screen_recording(
             continue
         results.append(bar_stability(df, m, baseline))
         results.append(bar_beyond_rate(df, m))
-        results.append(bar_treatment(df, m, baseline, post))
+        rec = recording or (str(df["recording"].iloc[0]) if "recording" in df.columns and len(df) else "unknown")
+        results.append(bar_treatment(df, m, baseline, post, recording=rec))
         results.append(bar_interpretability(m))
     return results, baseline, during, post

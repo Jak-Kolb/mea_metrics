@@ -78,6 +78,7 @@ Four-bar harness on library tables (`LOCAL_PLAN` B). Thresholds frozen in `LIBRA
 
 ```bash
 .venv/bin/python -m mea_metrics.screen --recording SMJM_Bicuculline
+.venv/bin/python -m mea_metrics.screen --all   # B2: all four → SCREEN_REPORT_*.md + combined
 ```
 
 Writes `reports/screen/SCREEN_REPORT.md`. Failures stay listed as FAIL.
