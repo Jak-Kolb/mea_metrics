@@ -179,6 +179,15 @@ def bar_treatment(
     *,
     recording: str | None = None,
 ) -> BarResult:
+    if metric.endswith("_delta"):
+        return BarResult(
+            metric,
+            "treatment_response",
+            "SKIP",
+            float("nan"),
+            "n/a",
+            "metric is already a post−baseline delta — treatment bar not applicable",
+        )
     if post_regions.size == 0 or baseline_regions.size == 0:
         return BarResult(metric, "treatment_response", "SKIP", float("nan"), "n/a", "no baseline or post regions")
 

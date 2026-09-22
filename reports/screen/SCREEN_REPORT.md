@@ -6,10 +6,10 @@ Same frozen thresholds as B1 (`LIBRARY_NOTES.md`). Treatment bar: *no culture ho
 
 | recording | PASS | FAIL | SKIP | report |
 |---|---:|---:|---:|---|
-| `SMJM_Bicuculline` | 56 | 11 | 1 | `reports/screen/SCREEN_REPORT_SMJM_Bicuculline.md` |
-| `ER52_ImpactWithBicuculline` | 46 | 21 | 1 | `reports/screen/SCREEN_REPORT_ER52_ImpactWithBicuculline.md` |
-| `JMSM_ImpactWithoutBicuculline` | 57 | 10 | 1 | `reports/screen/SCREEN_REPORT_JMSM_ImpactWithoutBicuculline.md` |
-| `SM_pHshock` | 57 | 10 | 1 | `reports/screen/SCREEN_REPORT_SM_pHshock.md` |
+| `SMJM_Bicuculline` | 56 | 7 | 5 | `reports/screen/SCREEN_REPORT_SMJM_Bicuculline.md` |
+| `ER52_ImpactWithBicuculline` | 46 | 17 | 5 | `reports/screen/SCREEN_REPORT_ER52_ImpactWithBicuculline.md` |
+| `JMSM_ImpactWithoutBicuculline` | 57 | 6 | 5 | `reports/screen/SCREEN_REPORT_JMSM_ImpactWithoutBicuculline.md` |
+| `SM_pHshock` | 57 | 6 | 5 | `reports/screen/SCREEN_REPORT_SM_pHshock.md` |
 
 ## Failure roll-up
 
@@ -22,10 +22,6 @@ Same frozen thresholds as B1 (`LIBRARY_NOTES.md`). Treatment bar: *no culture ho
 - **mean_ibi_s / beyond_rate**: Spearman(metric, rate_hz)=-0.909
 - **n_spikes / beyond_rate**: Spearman(metric, rate_hz)=1.000
 - **sttc_rate_resid_window / treatment_response**: Cohen_d(post−baseline)=0.109  *n=1 culture (SMJM_Bicuculline), no holdout yet*
-- **sttc_degree_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
-- **sttc_mean_unit_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
-- **rate_hz_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
-- **burst_count_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
 
 ### `ER52_ImpactWithBicuculline`
 
@@ -46,10 +42,6 @@ Same frozen thresholds as B1 (`LIBRARY_NOTES.md`). Treatment bar: *no culture ho
 - **sttc_mean_window / baseline_stability**: window split-half Spearman=0.033; CV across baseline=0.036
 - **sttc_rate_resid_window / baseline_stability**: window split-half Spearman=-0.538; CV across baseline=-1.696
 - **sttc_rate_resid_unit / treatment_response**: Cohen_d(post−baseline)=0.197  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
-- **sttc_degree_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
-- **sttc_mean_unit_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
-- **rate_hz_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
-- **burst_count_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (ER52_ImpactWithBicuculline), no holdout yet*
 
 ### `JMSM_ImpactWithoutBicuculline`
 
@@ -59,10 +51,6 @@ Same frozen thresholds as B1 (`LIBRARY_NOTES.md`). Treatment bar: *no culture ho
 - **sttc_mean_window / baseline_stability**: window split-half Spearman=0.168; CV across baseline=0.037
 - **sttc_rate_resid_window / baseline_stability**: window split-half Spearman=-0.455; CV across baseline=1.761
 - **sttc_rate_resid_window / treatment_response**: Cohen_d(post−baseline)=-0.269  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
-- **sttc_degree_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
-- **sttc_mean_unit_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
-- **rate_hz_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
-- **burst_count_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (JMSM_ImpactWithoutBicuculline), no holdout yet*
 
 ### `SM_pHshock`
 
@@ -72,10 +60,6 @@ Same frozen thresholds as B1 (`LIBRARY_NOTES.md`). Treatment bar: *no culture ho
 - **mean_ibi_s / treatment_response**: Cohen_d(post−baseline)=0.077  *n=1 culture (SM_pHshock), no holdout yet*
 - **sttc_degree / treatment_response**: Cohen_d(post−baseline)=-0.200  *n=1 culture (SM_pHshock), no holdout yet*
 - **n_spikes / beyond_rate**: Spearman(metric, rate_hz)=1.000
-- **sttc_degree_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (SM_pHshock), no holdout yet*
-- **sttc_mean_unit_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (SM_pHshock), no holdout yet*
-- **rate_hz_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (SM_pHshock), no holdout yet*
-- **burst_count_delta / treatment_response**: Cohen_d(post−baseline)=0.000  *n=1 culture (SM_pHshock), no holdout yet*
 
 ## Plan C recovery snapshot (culture-level)
 

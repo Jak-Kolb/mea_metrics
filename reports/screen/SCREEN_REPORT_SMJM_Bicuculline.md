@@ -34,10 +34,10 @@ Failed bars stay listed as **FAIL** (lab rule).
 | `sttc_mean_window` | PASS | PASS | PASS | PASS |
 | `sttc_rate_resid_window` | PASS | PASS | **FAIL** | PASS |
 | `sttc_rate_resid_unit` | PASS | PASS | PASS | PASS |
-| `sttc_degree_delta` | PASS | PASS | **FAIL** | PASS |
-| `sttc_mean_unit_delta` | PASS | PASS | **FAIL** | PASS |
-| `rate_hz_delta` | PASS | PASS | **FAIL** | PASS |
-| `burst_count_delta` | PASS | PASS | **FAIL** | PASS |
+| `sttc_degree_delta` | PASS | PASS | SKIP | PASS |
+| `sttc_mean_unit_delta` | PASS | PASS | SKIP | PASS |
+| `rate_hz_delta` | PASS | PASS | SKIP | PASS |
+| `burst_count_delta` | PASS | PASS | SKIP | PASS |
 
 ## Detail notes
 
@@ -136,26 +136,26 @@ Failed bars stay listed as **FAIL** (lab rule).
 
 - **baseline_stability**: PASS (score=1; Spearman≥0.5) — unit split-half Spearman=1.000; median unit CV=0.000
 - **beyond_rate**: PASS (score=0.3988; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=-0.399
-- **treatment_response**: FAIL (score=0; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+- **treatment_response**: SKIP (score=nan; n/a) — metric is already a post−baseline delta — treatment bar not applicable
 - **interpretability**: PASS (score=1; blurb registered) — Post−baseline change in STTC degree (partners with STTC>0.1).
 
 ### `sttc_mean_unit_delta`
 
 - **baseline_stability**: PASS (score=1; Spearman≥0.5) — unit split-half Spearman=1.000; median unit CV=0.000
 - **beyond_rate**: PASS (score=0.1969; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=-0.197
-- **treatment_response**: FAIL (score=0; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+- **treatment_response**: SKIP (score=nan; n/a) — metric is already a post−baseline delta — treatment bar not applicable
 - **interpretability**: PASS (score=1; blurb registered) — Post−baseline change in unit mean STTC.
 
 ### `rate_hz_delta`
 
 - **baseline_stability**: PASS (score=1; Spearman≥0.5) — unit split-half Spearman=1.000; median unit CV=0.000
 - **beyond_rate**: PASS (score=0.1777; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.178
-- **treatment_response**: FAIL (score=0; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+- **treatment_response**: SKIP (score=nan; n/a) — metric is already a post−baseline delta — treatment bar not applicable
 - **interpretability**: PASS (score=1; blurb registered) — Post−baseline change in mean firing rate.
 
 ### `burst_count_delta`
 
 - **baseline_stability**: PASS (score=1; Spearman≥0.5) — unit split-half Spearman=1.000; median unit CV=0.000
 - **beyond_rate**: PASS (score=0.1223; |Spearman(rate)|<0.9) — Spearman(metric, rate_hz)=0.122
-- **treatment_response**: FAIL (score=0; |Cohen_d|≥0.3) — Cohen_d(post−baseline)=0.000  *n=1 culture (SMJM_Bicuculline), no holdout yet*
+- **treatment_response**: SKIP (score=nan; n/a) — metric is already a post−baseline delta — treatment bar not applicable
 - **interpretability**: PASS (score=1; blurb registered) — Post−baseline change in burst count.

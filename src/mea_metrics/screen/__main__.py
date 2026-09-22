@@ -138,9 +138,66 @@ def _write_combined(summaries: list[dict], path: Path) -> None:
     if not any_fail:
         lines.append("_No FAIL bars across recordings._")
         lines.append("")
+    lines.extend(_recovery_snapshot_lines())
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines))
     print(f"wrote combined {path}")
+
+
+def _fmt_num(x) -> str:
+    import math
+    try:
+        v = float(x)
+    except (TypeError, ValueError):
+        return "nan"
+    if not math.isfinite(v):
+        return "nan"
+    if abs(v) >= 1000 or (abs(v) > 0 and abs(v) < 1e-2):
+        return f"{v:.4g}"
+    if abs(v - round(v)) < 1e-9:
+        return str(int(round(v)))
+    return f"{v:.4g}"
+
+
+def _recovery_snapshot_lines() -> list[str]:
+    """Plan C culture-level recovery rows from novel parquets (if present)."""
+    import pandas as pd
+
+    lines = [
+        "## Plan C recovery snapshot (culture-level)",
+        "",
+        "| recording | injury | tau_rec_burst_s | tau_rec_rate_s | burst_ratio post0/mid/last |",
+        "|---|---|---:|---:|---|",
+    ]
+    any_row = False
+    for rec in ALL_RECORDINGS:
+        novel_path = Path("reports/library") / f"{rec}_novel.parquet"
+        if not novel_path.is_file():
+            continue
+        row = pd.read_parquet(novel_path).iloc[0]
+        any_row = True
+        ratios = "/".join(
+            _fmt_num(row[c])
+            for c in (
+                "burst_rate_ratio_post0",
+                "burst_rate_ratio_post_mid",
+                "burst_rate_ratio_post_last",
+            )
+        )
+        lines.append(
+            f"| `{rec}` | {row.get('injury_label', '?')} | "
+            f"{_fmt_num(row.get('tau_rec_burst_s'))} | "
+            f"{_fmt_num(row.get('tau_rec_rate_s'))} | {ratios} |"
+        )
+    if not any_row:
+        return []
+    lines.append("")
+    lines.append(
+        "`tau_rec_*` = time (s) from injury end to first post region inside "
+        "baseline mean±1 SD; nan = never returned on the region grid."
+    )
+    lines.append("")
+    return lines
 
 
 def main(argv: list[str] | None = None) -> int:
